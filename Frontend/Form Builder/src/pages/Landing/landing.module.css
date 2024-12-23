@@ -1,106 +1,121 @@
-body{
-    background-color: #171923;
-    color: white;
+body {
+  background-color: #171923;
+  color: white;
 }
-.landingHeader{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0.5rem 3rem;
-    padding: 1rem;
+.landingHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.5rem 3rem;
+  padding: 1rem;
 }
-.leftLandingHeader, .rightLandingHeader{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
+.leftLandingHeader,
+.rightLandingHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
 }
-.leftLandingHeader img{
-    width: 35px;
-    height: 35px;
+.leftLandingHeader img {
+  width: 35px;
+  height: 35px;
 }
-.rightLandingHeader button{
-    padding: 0.75rem 1rem;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 16px;
-    cursor: pointer;
+.rightLandingHeader button {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
 }
-.landingContent{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    
+.landingContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.loadingMidContent{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
+.loadingMidContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
-.loadingMidContent button{
-    background-color: #1A5FFF;
-    padding: 1rem 2rem;
-    border-radius: 5px;
-    border-color: transparent;
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
+.loadingMidContent button {
+  background-color: #1a5fff;
+  padding: 1rem 2rem;
+  border-radius: 5px;
+  border-color: transparent;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
 }
-.loadingMidContent p{
-    font-size: 20px;
+.loadingMidContent p {
+  font-size: 20px;
 }
-.loadingMidContent h1{
-    font-size: 50px;
-    background: linear-gradient(to right, #4B83FF,#B794F4); 
-    -webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-     
+.loadingMidContent h1 {
+  font-size: 50px;
+  background: linear-gradient(to right, #4b83ff, #b794f4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
-.landingAd{
-    margin: 3rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    
-    
+.landingAd {
+  margin: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
-.landingAd img{
-    width: 550px;
+.landingAd img {
+  width: 550px;
 }
-
-.landingadimg img{
-    position: absolute;
-    width:900px;
-    bottom:-29rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.landingadimg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.footer1{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.landingadimg img {
+  position: absolute;
+  width: 900px;
+  bottom: -29rem;
 }
-.footer1 img{
-    width: 30px;
-    height: 30px;
+.footer1 {
+  display: flex;
+  flex-direction: column;
 }
-.landingFooter{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.footer1 img {
+  width: 30px;
+  height: 30px;
 }
-.footer1Top{
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.landingFooter {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 8rem;
+  margin-bottom: 4rem;
 }
-.footerContent{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.footer1Top {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  width: 100%;
+  margin-bottom: "0px";
+}
+.footerContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.footerLink {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.footerLink p,
+.footerLink img {
+  margin-top: 0px;
+  margin-bottom: 12px;
+}
+.footerLink img {
+  width: 14px;
 }
