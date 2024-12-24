@@ -1,0 +1,50 @@
+
+.homeNav {
+  display: flex;
+  align-items: center;
+justify-content: space-evenly;
+}
+.homeNav button{
+    background-color: #1A5FFF;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+}
+.themeSwitch{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+}
+.themeClick{
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: white;
+}
+.theme{
+    width: 35px;
+    background-color: #1A5FFF;
+    border-radius: 25px;
+}
+.themeDiv{
+    width: 100%;
+    background-color: #1A5FFF;
+}
+.workSpaceDropdown{
+    padding: 1rem;
+}
+.workSpaceDropdown select{
+    padding: 1rem;
+    border: 0.2px solid rgba(255, 255, 255, 0.8);
+    background-color: transparent;
+    color: white;
+    font-size: 16px;
+    width: 250px;
+}
+option{
+    background-color: #171923;
+    padding: 1rem;
+}

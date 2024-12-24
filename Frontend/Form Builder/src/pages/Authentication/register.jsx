@@ -28,6 +28,7 @@ const Register = () => {
     //overflow: hidden to the body
     document.body.style.overflow = "hidden";
 
+
     return () => {
       // Resetting overflow when component unmounts
       document.body.style.overflow = "auto";
@@ -42,7 +43,7 @@ const Register = () => {
     <>
       <div className={styles.login}>
         <FontAwesomeIcon className={styles.icon} icon={faArrowLeft} onClick={handleBack}/>
-        <form style={{ marginTop: "3%" }}>
+        <form className={styles.loginForm} style={{ marginTop: "3%" }}>
           <label style={{ margin: "0.2rem 0px" }}>Username</label>
           <input
             type="String"

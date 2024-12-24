@@ -1,14 +1,18 @@
 import styles from "./landing.module.css";
 import Share from "./Share.png";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Landing = () => {
   const navigate = useNavigate();
   const handleClick = () => {
     navigate("/login");
   };
+  useEffect(()=>{
+    document.body.style.backgroundColor = "#171923";
+  },[])
   return (
-    <div>
+    <div className={styles.landing}>
       <div className={styles.landingHeader}>
         <div className={styles.leftLandingHeader}>
           <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1734768080/SVG_1_iveeul.png" />

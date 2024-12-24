@@ -7,7 +7,7 @@ form {
   width: 30%;
   margin: 5% auto;
 }
-form input {
+.loginForm input {
   border-radius: 10px;
   padding: 8px;
   padding-left: 1rem;

@@ -1,0 +1,36 @@
+.setting{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 1rem;
+}
+.profileForm input{
+    border-radius: 8px;
+    padding: 0.75rem;
+    border: 1px solid rgba(255,255,255,0.8);
+    background-color: transparent;
+    margin-bottom: 16px;
+    color: white;
+}
+.profileForm button{
+    border-radius: 25px;
+    padding: 0.75rem;
+    border: none;
+    background-color: #1A5FFF;
+    color: white;
+    font-size: 15px;
+    margin-top: 14px;
+}
+.logOut{
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    gap: 12px;
+    color: #CF3636;
+    position: absolute;
+    bottom: 1.5rem;
+    left: 3rem;
+}
+
+

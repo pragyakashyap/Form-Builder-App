@@ -25,6 +25,7 @@ const Login = () => {
   useEffect(() => {
     //overflow: hidden to the body
     document.body.style.overflow = "hidden";
+  
 
     return () => {
       // Resetting overflow when component unmounts
@@ -41,7 +42,7 @@ const Login = () => {
       <div className={styles.login}>
         <FontAwesomeIcon className={styles.icon} icon={faArrowLeft} onClick={handleBack} />
 
-        <form>
+        <form className={styles.loginForm}>
           <label>Email</label>
           <input
             type="email"

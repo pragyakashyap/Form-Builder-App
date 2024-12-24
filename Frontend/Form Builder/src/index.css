@@ -4,6 +4,8 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-body {
+body,html {
   font-family: 'Open Sans';
+  background-color: #18181b;
+  color: white;
 }
