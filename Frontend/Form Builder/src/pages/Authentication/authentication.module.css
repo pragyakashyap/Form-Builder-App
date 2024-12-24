@@ -1,6 +1,3 @@
-body {
-  overflow: hidden;
-}
 .login {
   margin: 3rem;
 }
@@ -17,6 +14,7 @@ form input {
   margin-bottom: 1rem;
   background-color: transparent;
   border: 1px solid #c4c4c4;
+  color: white;
 }
 
 label {
@@ -62,7 +60,7 @@ label {
 .ellipse1 {
   position: absolute;
   bottom: -1%;
-  left: 60%;
+  left: 65%;
   overflow: hidden;
 }
 .ellipse2 {
@@ -70,4 +68,7 @@ label {
   top: 10%;
   right: -1%;
   overflow: hidden;
+}
+.icon{
+    cursor:pointer
 }
