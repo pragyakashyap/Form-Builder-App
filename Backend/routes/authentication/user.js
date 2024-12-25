@@ -59,7 +59,7 @@ router.post("/register", async (req, res) => {
             user: savedUser,
             defaultWorkspace: savedWorkspace
         });
-        return res.status(201).json({
+        return res.status(200).json({
             message: "User created successfully",
             token,
             user:savedUser,
@@ -84,7 +84,11 @@ router.post("/login",async(req,res)=>{
                 return res.status(400).json({message:"Invalid password"})
             }
             const token = jwt.sign({email:userExist.email,id:userExist._id},process.env.JWT_SECRET,{expiresIn:'30d'})
-            return res.status(200).json({message:"Login Successful",token,id:user._id,name:user.name})
+            return res.status(200).json({
+                message: "Login Successful",
+                token
+            });
+            
         }
     } catch (error) {
         console.log(error)
