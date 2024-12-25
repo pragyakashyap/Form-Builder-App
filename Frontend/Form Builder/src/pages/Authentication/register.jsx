@@ -3,6 +3,8 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import styles from "./authentication.module.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { register } from "../../services";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +13,8 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
+
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const handleClick = () => {
@@ -28,22 +32,46 @@ const Register = () => {
     //overflow: hidden to the body
     document.body.style.overflow = "hidden";
 
-
     return () => {
       // Resetting overflow when component unmounts
       document.body.style.overflow = "auto";
     };
   }, []);
 
-  const handleBack = ()=>{
-    navigate("/login")
-  }
+  const handleBack = () => {
+    navigate("/login");
+  };
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(() => true);
+      const response = await register(formData);
+      if (response && response.token) {
+        toast.success(response.message || "Signup successful!");
+        localStorage.setItem("token", response.token);
+        localStorage.setItem("userId", response.id);
+        navigate("/login"); // Redirect to homepage
+      } else if (response && response.message) {
+        toast.error(response.message || "Something went wrong.");
+      }
+    } catch (error) {
+      toast.error("An unexpected error occurred. Please try again.");
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
       <div className={styles.login}>
-        <FontAwesomeIcon className={styles.icon} icon={faArrowLeft} onClick={handleBack}/>
-        <form className={styles.loginForm} style={{ marginTop: "3%" }}>
+        <FontAwesomeIcon
+          className={styles.icon}
+          icon={faArrowLeft}
+          onClick={handleBack}
+        />
+        <form className={styles.loginForm} style={{ marginTop: "3%" }} onSubmit={handleRegister}>
           <label style={{ margin: "0.2rem 0px" }}>Username</label>
           <input
             type="String"

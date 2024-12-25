@@ -10,17 +10,16 @@
 }
 
 
-/* Default theme (light) applied to the body */
+/* Default theme (dark) applied to the body */
 body {
   font-family: 'Open Sans';
-  background-color: var(--background-color-light);
-  color: var(--text-color-light);
+  background-color: var(--background-color-dark);
+  color: var(--text-color-dark);
   transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
 }
 
-/* Dark theme will be applied when the body has the 'dark' class */
-body.dark {
-  background-color: var(--background-color-dark);
-  color: var(--text-color-dark);
+body.light{
+  background-color: var(--background-color-light);
+  color: var(--text-color-light);
 }
 

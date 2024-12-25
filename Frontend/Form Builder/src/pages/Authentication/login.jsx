@@ -3,12 +3,16 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import styles from "./authentication.module.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import {login} from "../../services"
+import toast from "react-hot-toast";
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const handleClick = () => {
@@ -37,12 +41,32 @@ const Login = () => {
     navigate("/")
   }
 
+  const handleLogin=async(e)=>{
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const response = await login(formData);
+      if (response && response.token) {
+        toast.success(response.message || "Login successful!"); // Success toast
+        localStorage.setItem("token", response.token);
+        navigate("/home");
+      } else if (response && response.message) {
+        toast.error(response.message || "Invalid credentials.");
+      }
+    } catch (error) {
+      toast.error("An unexpected error occurred. Please try again.");
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <>
       <div className={styles.login}>
         <FontAwesomeIcon className={styles.icon} icon={faArrowLeft} onClick={handleBack} />
 
-        <form className={styles.loginForm}>
+        <form className={styles.loginForm} onSubmit={handleLogin}>
           <label>Email</label>
           <input
             type="email"
