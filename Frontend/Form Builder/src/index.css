@@ -3,9 +3,24 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --background-color-light: white;
+  --text-color-light: black;
+  --background-color-dark: #18181b;
+  --text-color-dark: white;
 }
-body,html {
+
+
+/* Default theme (light) applied to the body */
+body {
   font-family: 'Open Sans';
-  background-color: #18181b;
-  color: white;
+  background-color: var(--background-color-light);
+  color: var(--text-color-light);
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
 }
+
+/* Dark theme will be applied when the body has the 'dark' class */
+body.dark {
+  background-color: var(--background-color-dark);
+  color: var(--text-color-dark);
+}
+

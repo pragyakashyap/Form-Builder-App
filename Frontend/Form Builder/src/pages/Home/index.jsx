@@ -1,27 +1,44 @@
 import styles from "./home.module.css";
+import WorkSpace from "./WorkSpace";
 import WorkSpaceDropdown from "./WorkSpaceDropdown";
+import ShareWorkspaceModal from "./ShareWorkspaceModal";
 import { useState } from "react";
-import {useNavigate} from "react-router-dom"
+import { useEffect } from "react";
 
 const Home = () => {
-  const [workspaces, setWorkspaces] = useState([
-    { id: "1", name: "My Workspace" },
-    { id: "2", name: "Shared Workspace 1"},
-  ]); // Dummy data for workspaces
-  const [activeWorkspace, setActiveWorkspace] = useState("1"); // Default to the first workspace
-  
-  const navigate =  useNavigate()
-  // Handle workspace switching
-  const handleWorkspaceChange = (value) => {
-    if (value === "Settings") {
-      navigate("/settings"); // Navigate to the Settings page
-    } else if (value === "Logout") {
-      console.log("Logging out...");
-      navigate("/login"); // Redirect to the login page
-    } else{
-    setActiveWorkspace(value);
-    }
+  const workspaces = [{ id: "workspace1", name: "Pragya Kashyap's workspace" }];
+
+  const handleWorkspaceChange = (id) => {
+    console.log("Workspace selected:", id);
   };
+
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const toggleTheme = () => {
+    setIsDarkMode((prev) => !prev);
+  };
+
+  const handleShareWorkspace = (email) => {
+    console.log(`Shared workspace with ${email}`);
+    setIsModalOpen(false);
+  };
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+      setIsDarkMode(savedTheme === "dark");
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+    if (isDarkMode) {
+      document.body.classList.add("dark");
+    } else {
+      document.body.classList.remove("dark");
+    }
+  }, [isDarkMode]);
 
   return (
     <div className={styles.home}>
@@ -29,21 +46,42 @@ const Home = () => {
         <div className={styles.homeDropDown}>
           <WorkSpaceDropdown
             workspaces={workspaces}
-            activeWorkspace={activeWorkspace}
+            activeWorkspace={workspaces[0]}
             onWorkspaceChange={handleWorkspaceChange}
           />
         </div>
-        <div className={styles.themeSwitch}>
+        <div className={styles.rightNav}>
+          <div className={styles.themeSwitch}>
             <span>Light</span>
-            <div className={styles.theme}>
-                <div className={styles.themeDiv}>
-
-                </div>
-                <div className={styles.themeClick}></div>
+            <div
+              className={
+                isDarkMode ? `${styles.theme}` : `${styles.themeLight}`
+              }
+              onClick={toggleTheme}
+            >
+              <div className={styles.themeDiv}></div>
+              <div
+                className={
+                  isDarkMode
+                    ? `${styles.themeClick}`
+                    : `${styles.themeClickLight}`
+                }
+              ></div>
             </div>
             <span>Dark</span>
+          </div>
+          <button onClick={()=>setIsModalOpen(true)}>Share</button>
         </div>
-        <button>Share</button>
+      </div>
+      <hr className={styles.homeLine} />
+      <div className={styles.workspace}>
+        <WorkSpace />
+        {isModalOpen && (
+        <ShareWorkspaceModal
+          onClose={() => setIsModalOpen(false)}
+          onShare={handleShareWorkspace}
+        />
+      )}
       </div>
     </div>
   );
