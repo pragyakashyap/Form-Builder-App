@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
-import workspace from "./workspace.schema"
-import folder from "./folder.schema"
+import workspace from "./workspace.schema.js"
+import folder from "./folder.schema.js"
 
 const formSchema = new mongoose.Schema({
     name: { type: String, required: true },

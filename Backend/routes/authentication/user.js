@@ -2,7 +2,9 @@ import express from "express"
 import dotenv from "dotenv"
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
-import user from "../../schema/user.schema.js"
+import User from "../../schema/user.schema.js"
+import authenticateToken from "../../middleware/index.js"
+import Workspace from "../../schema/workspace.schema.js"
 
 dotenv.config()
 
@@ -18,7 +20,7 @@ router.post("/register", async (req, res) => {
         }
 
         // Check if the user already exists
-        const userExist = await user.findOne({ email });
+        const userExist = await User.findOne({ email });
         if (userExist) {
             return res.status(400).json({ message: "User already exists. Please login." });
         }
@@ -27,8 +29,21 @@ router.post("/register", async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Create a new user
-        const newUser = new user({ name, email, password: hashedPassword });
-        await newUser.save();
+        const newUser = new User({ name, email, password: hashedPassword });
+        const savedUser=await newUser.save();   
+
+        const defaultWorkspace = new Workspace({
+            name: `${name}'s Workspace`,
+            owner: savedUser._id,
+            default: true,
+        });
+
+        const savedWorkspace = await defaultWorkspace.save();
+
+
+        // Link workspace to user
+        savedUser.workspaces.push(savedWorkspace._id);
+        await savedUser.save();
 
         // Generate a token
         const token = jwt.sign(
@@ -38,10 +53,17 @@ router.post("/register", async (req, res) => {
         );
 
         // Respond with success
+        console.log({
+            message: "User created successfully",
+            token,
+            user: savedUser,
+            defaultWorkspace: savedWorkspace
+        });
         return res.status(201).json({
             message: "User created successfully",
             token,
-            id: newUser._id,
+            user:savedUser,
+            defaultWorkspace: savedWorkspace
         });
     } catch (error) {
         console.error(error);
@@ -53,7 +75,7 @@ router.post("/register", async (req, res) => {
 router.post("/login",async(req,res)=>{
     try {
         const {email,password} = req.body
-        const userExist = await user.findOne({email:email})
+        const userExist = await User.findOne({email:email})
         if(!userExist){
             return res.status(400).json({message:"User does not exist."})
         }else{
@@ -69,5 +91,54 @@ router.post("/login",async(req,res)=>{
         res.status(400).json({message:"Server Error"})
     }
 })
+
+// Update user details route
+router.put("/update", authenticateToken, async (req, res) => {
+    try {
+        const { name, email, oldPassword, newPassword } = req.body;
+        const { id } = req.user; // Get the user ID from the token
+
+        // Validate fields
+        if (!name && !email  && (!oldPassword || !newPassword)) {
+            return res.status(400).json({ message: "Please provide fields to update." });
+        }
+
+        const updatedData = {};
+
+        // Add fields to update
+        if (name) updatedData.name = name;
+        if (email) updatedData.email = email;
+
+        // Handle password update
+        if (oldPassword && newPassword) {
+            const existingUser = await User.findById(id);
+            if (!existingUser) {
+                return res.status(404).json({ message: "User not found." });
+            }
+
+            // Verify old password
+            const isPasswordValid = await bcrypt.compare(oldPassword, existingUser.password);
+            if (!isPasswordValid) {
+                return res.status(400).json({ message: "Old password is incorrect." });
+            }
+
+            // Hash the new password
+            const hashedPassword = await bcrypt.hash(newPassword, 10);
+            updatedData.password = hashedPassword;
+        }
+
+        // Update the user profile in the database
+        const updatedUser = await User.findByIdAndUpdate(id, updatedData, { new: true });
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User not found." });
+        }
+
+        res.status(200).json({ message: "Profile updated successfully", updatedUser });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Server Error" });
+    }
+});
 
 export default router 
