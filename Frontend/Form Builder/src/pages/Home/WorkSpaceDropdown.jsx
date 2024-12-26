@@ -11,13 +11,14 @@ const WorkSpaceDropdown = ({ workspaces, activeWorkspace, onWorkspaceChange }) =
   const handleWorkspaceChange = (workspace) => {
     setSelected(workspace);
     setIsOpen(false);
-    if (workspace.id === "settings") {
+    if (workspace._id === "settings") {
       navigate("/settings");
-    } else if (workspace.id === "logout") {
+    } else if (workspace._id === "logout") {
       console.log("Logging out...");
+      localStorage.removeItem("token")
       navigate("/login");
     } else {
-      onWorkspaceChange(workspace.id);
+      onWorkspaceChange(workspace._id);
     }
   };
 
@@ -26,19 +27,20 @@ const WorkSpaceDropdown = ({ workspaces, activeWorkspace, onWorkspaceChange }) =
       className={styles.workSpaceDropdown}
       onClick={() => setIsOpen(!isOpen)}
     >
-      {/* Selected Option */}
-      <div className={styles.selectedOption}>
-        {selected.name}
-      </div>
+     
+     <div className={styles.selectedOption}>
+     {selected?.name || "Select Workspace"} {/* Use optional chaining and fallback */}
+   </div>
+   
 
       {/* Dropdown Options */}
       {isOpen && (
         <div className={styles.dropdownMenu}>
           {workspaces
-            .filter(workspace => workspace.id !== selected.id)  // Exclude the selected option
+            .filter(workspace => workspace._id !== selected.id)  // Exclude the selected option
             .map((workspace) => (
               <div
-                key={workspace.id}
+                key={workspace._id}
                 className={styles.dropdownOption}
                 onClick={() => handleWorkspaceChange(workspace)}
               >
@@ -48,7 +50,7 @@ const WorkSpaceDropdown = ({ workspaces, activeWorkspace, onWorkspaceChange }) =
           <div
             className={styles.dropdownOption}
             onClick={() =>
-              handleWorkspaceChange({ id: "settings", name: "Settings" })
+              handleWorkspaceChange({ _id: "settings", name: "Settings" })
             }
           >
             Settings
@@ -57,7 +59,7 @@ const WorkSpaceDropdown = ({ workspaces, activeWorkspace, onWorkspaceChange }) =
             className={styles.dropdownOption}
             style={{ color: "#FFA54C" }}
             onClick={() =>
-              handleWorkspaceChange({ id: "logout", name: "Logout" })
+              handleWorkspaceChange({ _id: "logout", name: "Logout" })
             }
           >
             Logout

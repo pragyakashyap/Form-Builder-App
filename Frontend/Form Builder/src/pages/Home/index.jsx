@@ -4,34 +4,87 @@ import WorkSpaceDropdown from "./WorkSpaceDropdown";
 import ShareWorkspaceModal from "./ShareWorkspaceModal";
 import { useState } from "react";
 import { useEffect } from "react";
+import { fetchWorkspaces, createFolder } from "../../services";
 
 const Home = () => {
-  const [workspaces,setWorkspaces] = useState([{ id: "workspace1", name: "Pragya Kashyap's workspace" }]) 
+  const [workspaces, setWorkspaces] = useState([]);
+  const [folders, setFolders] = useState([]);
+  const [forms, setForms] = useState([]);
+  const [isLightMode, setIsLightMode] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [permissions, setPermissions] = useState("edit"); // Can be "view" or "edit"
+
+  useEffect(() => {
+    const getWorkspace = async () => {
+      try {
+        const workspacesResponse = await fetchWorkspaces();
+        console.log("API Response:", workspacesResponse);
+        setWorkspaces(workspacesResponse);
+
+        if (workspacesResponse.length > 0) {
+          setFolders(workspacesResponse[0].folders || []);
+        }
+      } catch (error) {
+        console.error("Error fetching workspaces:", error);
+      }
+    };
+    getWorkspace();
+  }, []);
 
   const handleWorkspaceChange = (id) => {
     console.log("Workspace selected:", id);
+    const selectedWorkspace = workspaces.find((workspace) => workspace._id === id);
+    if (selectedWorkspace) {
+      setFolders(selectedWorkspace.folders || []);
+    } else {
+      setFolders([]);
+    }
   };
-
-  const [isLightMode, setIsLightMode] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleTheme = () => {
     setIsLightMode((prev) => !prev);
   };
 
+  const handleAddFolder = async (folderName) => {
+    try {
+      const response = await createFolder({
+        name: folderName,
+        workspaceId: workspaces[0]._id, // Pass the current workspace ID
+      });
+      console.log("Folder creation response:", response);
+       // Fetch updated folders
+    const updatedWorkspaces = await fetchWorkspaces();
+    const updatedFolders = updatedWorkspaces.find(
+      (ws) => ws._id === workspaces[0]._id
+    ).folders;
+
+    setFolders(updatedFolders); // Update folders with the latest data
+    } catch (err) {
+      console.error("Error creating folder:", err);
+    }
+  };
+
+  const handleDeleteFolder = async (folderId) =>{
+    
+  }
+
+  
+  useEffect(() => {
+    console.log("Updated folders:", folders);
+  }, [folders]);
+
+  const handleAddForm = (formName) => {
+    setForms([...forms, { id: Date.now(), name: formName }]);
+  };
+
   const handleShareWorkspace = (email, permission) => {
     console.log(`Shared workspace with ${email} (${permission})`);
-    setWorkspaces([...workspaces, { id: `shared-${Date.now()}`, name: `${email}'s workspace`, permission }]);
+    setWorkspaces([
+      ...workspaces,
+      { id: `shared-${Date.now()}`, name: `${email}'s workspace`, permission },
+    ]);
     setIsModalOpen(false);
   };
-  
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-      setIsLightMode(!(savedTheme === "dark"));
-    }
-  }, []);
 
   useEffect(() => {
     localStorage.setItem("theme", isLightMode ? "light" : "dark");
@@ -42,34 +95,13 @@ const Home = () => {
     }
   }, [isLightMode]);
 
-  const [folders, setFolders] = useState([]);
-  const [forms, setForms] = useState([]);
-  const [permissions, setPermissions] = useState("edit"); // Can be "view" or "edit"
-
-  const handleAddFolder = (folderName) => {
-    setFolders([
-      ...folders,
-      { id: Date.now(), name: folderName },
-    ]);
-  };
-
-  const handleAddForm = (formName) => {
-    setForms([...forms, { id: Date.now(), name: formName }]);
-  };
-
- 
-
- 
-  
-  
-
   return (
     <div className={styles.home}>
       <div className={styles.homeNav}>
         <div className={styles.homeDropDown}>
           <WorkSpaceDropdown
             workspaces={workspaces}
-            activeWorkspace={workspaces[0]}
+            activeWorkspace={workspaces[0] || { id: "default", name: "Select Workspace" }}
             onWorkspaceChange={handleWorkspaceChange}
           />
         </div>
@@ -77,9 +109,7 @@ const Home = () => {
           <div className={styles.themeSwitch}>
             <span>Light</span>
             <div
-              className={
-                isLightMode ? `${styles.themeLight}` : `${styles.theme}`
-              }
+              className={isLightMode ? `${styles.themeLight}` : `${styles.theme}`}
               onClick={toggleTheme}
             >
               <div className={styles.themeDiv}></div>
@@ -104,7 +134,6 @@ const Home = () => {
           permissions={permissions}
           onAddFolder={handleAddFolder}
           onAddForm={handleAddForm}
-          
         />
         {isModalOpen && (
           <ShareWorkspaceModal
@@ -118,3 +147,4 @@ const Home = () => {
 };
 
 export default Home;
+

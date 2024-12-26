@@ -41,4 +41,20 @@ router.get("/:workspaceId", authenticateToken, async (req, res) => {
     }
 });
 
+router.delete("/:folderId",async(req,res)=>{
+    const {folderId} = req.params
+    try {
+        const folder = await Folder.findById(folderId);
+        if(!folder){
+            return res.status(404).json({message:"Folder not found"})
+        }
+
+        await Folder.findByIdAndDelete(folderId)
+        res.status(200).json({ message: "Folder deleted successfully" });
+    } catch (error) {
+        console.error(error);
+    res.status(500).json({ message: "Error deleting the folder", error });
+    }
+})
+
 export default router;
