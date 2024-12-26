@@ -4,7 +4,7 @@ import WorkSpaceDropdown from "./WorkSpaceDropdown";
 import ShareWorkspaceModal from "./ShareWorkspaceModal";
 import { useState } from "react";
 import { useEffect } from "react";
-import { fetchWorkspaces, createFolder } from "../../services";
+import { fetchWorkspaces, createFolder, createForm } from "../../services";
 
 const Home = () => {
   const [workspaces, setWorkspaces] = useState([]);
@@ -23,6 +23,7 @@ const Home = () => {
 
         if (workspacesResponse.length > 0) {
           setFolders(workspacesResponse[0].folders || []);
+          setForms(workspacesResponse[0].forms || []);
         }
       } catch (error) {
         console.error("Error fetching workspaces:", error);
@@ -73,9 +74,27 @@ const Home = () => {
     console.log("Updated folders:", folders);
   }, [folders]);
 
-  const handleAddForm = (formName) => {
-    setForms([...forms, { id: Date.now(), name: formName }]);
+  const handleAddForm = async (formName, folderId = null) => {
+    try {
+      const response = await createForm({
+        name: formName,
+        workspaceId: workspaces[0]._id,
+        folderId: folderId, // Pass folderId if inside a folder
+      });
+  
+      console.log("Form creation response:", response);
+      const form = response?.data || response;
+  
+      if (form && form.name && form._id) {
+        setForms((prev) => [...prev, form]);
+      } else {
+        console.error("Invalid form data received from API:", form);
+      }
+    } catch (err) {
+      console.error("Error creating form:", err);
+    }
   };
+  
 
   const handleShareWorkspace = (email, permission) => {
     console.log(`Shared workspace with ${email} (${permission})`);

@@ -82,18 +82,20 @@
   top: 100%;
   left: 0;
   right: 0;
-  background: transparent;
+  background: #1d1d1d;
   border: 1px solid #333336;
   border-radius: 4px;
   z-index: 1000;
   max-height: 200px;
   overflow-y: auto;
+  
 }
 
 .dropdownOption {
   padding: 10px;
   cursor: pointer;
   border-bottom: 1px solid #333336;
+  
 }
 
 .dropdownOption:last-child {

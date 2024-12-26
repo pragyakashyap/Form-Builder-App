@@ -106,3 +106,21 @@ export const deleteFolder = async (folderId) =>{
 }
 
 //create forms
+export const createForm = async (formData) => {
+    const token = localStorage.getItem("token");
+    const response = await fetch(`${BACKEND_URL}api/forms`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Include the token
+      },
+      body: JSON.stringify(formData),
+    });
+  
+    if (response.ok) {
+      return response.json();
+    } else {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to create form");
+    }
+  };    

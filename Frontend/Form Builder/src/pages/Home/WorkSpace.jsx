@@ -45,7 +45,7 @@ const WorkSpace = ({ folders, forms, permissions, onAddFolder, onAddForm }) => {
         )}
         {forms.map((form) => (
           <div
-            key={form.id}
+            key={form._id}
             className={`${styles.formarea} ${styles.formareaCreated}`}
           >
             {form.name}
