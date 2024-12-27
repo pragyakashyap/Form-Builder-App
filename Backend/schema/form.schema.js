@@ -22,6 +22,14 @@ const formSchema = new mongoose.Schema({
                 enum: ["text", "image", "textInput", "email", "number", "phone", "date", "rating", "buttons"],
                 required: true
             },
+            name: {
+                type: String
+            },
+            category: {
+                type: String, // Added category field
+                enum: ["bubble", "input"], // Specify allowed values explicitly
+                required: true,
+            },
             content: {
                 type: String // For bubble text or image URL
             },
