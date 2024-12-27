@@ -66,8 +66,14 @@
   margin-top: 5%;
   gap: 12px;
 }
+.start{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+}
 .start,
-.component {
+.componentWrapper {
   background-color: #18181b;
   width: 20%;
   padding: 1rem;
@@ -95,4 +101,22 @@
 
 .component button{
     padding:14px;
+}
+
+.componentWrapper{
+  position: relative;
+}
+.component{
+  width: 100%;
+}
+.deleteIcon{
+  border-radius: 50%;
+  padding: 2px;
+  position: absolute;
+  right: -3%;
+  top: -5%;
+  background-color: #444444;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
 }
