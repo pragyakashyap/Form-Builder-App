@@ -3,15 +3,16 @@ import { useState, useEffect } from "react";
 import { fetchFormById, updateForm } from "../../services";
 import styles from "./formEditor.module.css";
 import ThemeSwitch from "../ThemeSwitch";
-import { TextBubble } from "./textBubble";
-import { ImageBubble } from "./imageBubble";
-import { InputText } from "./textInput";
-import { InputNumber } from "./numberInput";
-import { EmailInput } from "./emailInput";
-import { PhoneInput } from "./phoneInput";
-import { DateInput } from "./dateInput";
-import { RatingInput } from "./ratingInput";
-import { ButtonInput } from "./buttonInput";
+import { TextBubble } from "./bubbles/textBubble";
+import { ImageBubble } from "./bubbles/imageBubble";
+import { InputText } from "./inputs/textInput";
+import { InputNumber } from "./inputs/numberInput";
+import { EmailInput } from "./inputs/emailInput";
+import { PhoneInput } from "./inputs/phoneInput";
+import { DateInput } from "./inputs/dateInput";
+import { RatingInput } from "./inputs/ratingInput";
+import { ButtonInput } from "./inputs/buttonInput";
+import toast from "react-hot-toast"
 
 const FormEditor = () => {
   const { formId } = useParams();
@@ -38,8 +39,17 @@ const FormEditor = () => {
     // Add the new component
     setComponents((prevComponents) => [
       ...prevComponents,
-      { type, name: `${type} ${newCount}`, category },
+      { type, name: `${type} ${newCount}`, category, content:"" },
     ]);
+
+  };
+
+  const handleContentChange = (index, newContent) => {
+    setComponents((prevComponents) =>
+      prevComponents.map((component, i) =>
+        i === index ? { ...component, content: newContent } : component
+      )
+    );
   };
   
 
@@ -60,6 +70,7 @@ const FormEditor = () => {
       try {
         const formData = await fetchFormById(formId);
         setForm(formData);
+        setComponents(formData.components || []); // Populate components
       } catch (error) {
         console.error("Error fetching form:", error);
       }
@@ -69,22 +80,38 @@ const FormEditor = () => {
   }, [formId]);
 
   const handleSave = async () => {
+    console.log(components) 
     try {
-      await updateForm(formId, form);
-      alert("Form updated successfully!");
+      const updatedForm = { ...form, components };
+      console.log("Payload sent to updateForm:", updatedForm);
+      await updateForm(formId, updatedForm);
+      toast("Form updated successfully!");
+      setForm(updatedForm)
     } catch (error) {
       console.error("Error updating form:", error);
+      toast.error("Failed to update form. Please try again.");
     }
+    console.log(form)
+    
+
   };
+
+  const handleDeleteComponent = (index) => {
+    setComponents((prevComponents) => prevComponents.filter((_, i) => i !== index));
+  };
+  
 
   useEffect(() => {
     document.body.style.backgroundColor = "#1f1f23";
-
+    
     //  Cleanup function to reset when component unmounts
     return () => {
       document.body.style.backgroundColor = "#18181b";
     };
   }, []);
+
+  
+  
 
   return (
     <div className={styles.FormEditor}>
@@ -107,7 +134,7 @@ const FormEditor = () => {
           <ThemeSwitch />
           <div className={styles.shareAndSave}>
             <button>Share</button>
-            <button>Save</button>
+            <button onClick={handleSave}>Save</button>
           </div>
           <div className={styles.delete}>
             <img src="close.png" />
@@ -172,14 +199,17 @@ const FormEditor = () => {
         <div className={styles.rightPanel}>
           <div className={styles.start}>Start</div>
 
-          {components.map((component, index) => {
+          {(components).map((component, index) => {
             const Component = componentMapping[component.type];
 
             if (component.category === "bubble") {
-              return <Component key={index} name={component.name} />;
+              return <Component key={index} name={component.name}  content={component.content || ""}
+              onContentChange={(newContent) => handleContentChange(index, newContent)}/>;
             } else if (component.category === "input") {
               return <Component key={index} name={component.name} isInput />;
             }
+
+            
           })}
         </div>
       </div>

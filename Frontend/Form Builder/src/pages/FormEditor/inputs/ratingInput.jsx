@@ -1,4 +1,4 @@
-import styles from "./formEditor.module.css";
+import styles from "../formEditor.module.css";
 
 export const RatingInput = ({ name }) => (
     <div className={styles.component}>

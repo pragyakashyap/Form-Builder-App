@@ -158,9 +158,13 @@ export const fetchFormById = async (formId) => {
 
 
 export const updateForm = async (formId, formData) => {
+  const token = localStorage.getItem("token"); 
   const response = await fetch(`${BACKEND_URL}api/forms/${formId}`, {
     method: "PUT",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      Authorization: `Bearer ${token}`, 
+      "Content-Type": "application/json", 
+    },
     body: JSON.stringify(formData),
   });
   if (!response.ok) throw new Error("Failed to update form");

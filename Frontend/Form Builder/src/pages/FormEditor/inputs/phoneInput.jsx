@@ -1,4 +1,4 @@
-import styles from "./formEditor.module.css";
+import styles from "../formEditor.module.css";
 
 export const PhoneInput = ({ name }) => (
     <div className={styles.component}>
