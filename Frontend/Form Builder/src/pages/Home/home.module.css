@@ -15,43 +15,6 @@
   border-radius: 4px;
 }
 
-.themeSwitch {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-}
-
-.themeClick {
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  background-color: white;
-  margin-left: 58%;
-}
-.themeClickLight {
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  background-color: white;
-  margin-left: 0px;
-}
-
-.theme {
-  width: 35px;
-  background-color: #1a5fff;
-  border-radius: 25px;
-}
-.themeLight {
-  width: 35px;
-  background-color: #b1b1b1;
-  border-radius: 25px;
-}
-
-.themeDiv {
-  width: 100%;
-  background-color: #1a5fff;
-}
 
 .rightNav {
   display: flex;
@@ -243,4 +206,7 @@
   background-color: #8b8b8d;
 }
 
-
+.selectedFolder {
+  background-color: white;
+  color: black;
+}

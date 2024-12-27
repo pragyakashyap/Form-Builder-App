@@ -4,13 +4,20 @@ import WorkSpaceDropdown from "./WorkSpaceDropdown";
 import ShareWorkspaceModal from "./ShareWorkspaceModal";
 import { useState } from "react";
 import { useEffect } from "react";
-import { fetchWorkspaces, createFolder, createForm } from "../../services";
+import {
+  fetchWorkspaces,
+  createFolder,
+  createForm,
+  deleteFolder,
+  deleteForm,
+} from "../../services";
+import ThemeSwitch from "../ThemeSwitch";
 
 const Home = () => {
   const [workspaces, setWorkspaces] = useState([]);
   const [folders, setFolders] = useState([]);
   const [forms, setForms] = useState([]);
-  const [isLightMode, setIsLightMode] = useState(false);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [permissions, setPermissions] = useState("edit"); // Can be "view" or "edit"
 
@@ -34,16 +41,14 @@ const Home = () => {
 
   const handleWorkspaceChange = (id) => {
     console.log("Workspace selected:", id);
-    const selectedWorkspace = workspaces.find((workspace) => workspace._id === id);
+    const selectedWorkspace = workspaces.find(
+      (workspace) => workspace._id === id
+    );
     if (selectedWorkspace) {
       setFolders(selectedWorkspace.folders || []);
     } else {
       setFolders([]);
     }
-  };
-
-  const toggleTheme = () => {
-    setIsLightMode((prev) => !prev);
   };
 
   const handleAddFolder = async (folderName) => {
@@ -53,48 +58,67 @@ const Home = () => {
         workspaceId: workspaces[0]._id, // Pass the current workspace ID
       });
       console.log("Folder creation response:", response);
-       // Fetch updated folders
-    const updatedWorkspaces = await fetchWorkspaces();
-    const updatedFolders = updatedWorkspaces.find(
-      (ws) => ws._id === workspaces[0]._id
-    ).folders;
+      // Fetch updated folders
+      const updatedWorkspaces = await fetchWorkspaces();
+      const updatedFolders = updatedWorkspaces.find(
+        (ws) => ws._id === workspaces[0]._id
+      ).folders;
 
-    setFolders(updatedFolders); // Update folders with the latest data
+      setFolders(updatedFolders); // Update folders with the latest data
     } catch (err) {
       console.error("Error creating folder:", err);
     }
   };
 
-  const handleDeleteFolder = async (folderId) =>{
-    
-  }
+  const handleDeleteFolder = async (folderId) => {
+    try {
+      await deleteFolder(folderId); // API call to delete folder
+      const updatedWorkspaces = await fetchWorkspaces();
+      const currentWorkspace = updatedWorkspaces.find(
+        (ws) => ws._id === workspaces[0]._id
+      );
+      setFolders(currentWorkspace.folders || []); // Update folders
+    } catch (error) {
+      console.error("Error deleting folder:", error);
+    }
+  };
 
-  
+  const handleDeleteForm = async (formId) => {
+    try {
+      await deleteForm(formId); // API call to delete form
+      const updatedWorkspaces = await fetchWorkspaces();
+      const currentWorkspace = updatedWorkspaces.find(
+        (ws) => ws._id === workspaces[0]._id
+      );
+      setForms(currentWorkspace.forms || []); // Update forms
+    } catch (error) {
+      console.error("Error deleting form:", error);
+    }
+  };
+
   useEffect(() => {
     console.log("Updated folders:", folders);
   }, [folders]);
 
   const handleAddForm = async (formName, folderId = null) => {
     try {
-      const response = await createForm({
+      await createForm({
         name: formName,
         workspaceId: workspaces[0]._id,
-        folderId: folderId, // Pass folderId if inside a folder
+        folderId: folderId,
       });
-  
-      console.log("Form creation response:", response);
-      const form = response?.data || response;
-  
-      if (form && form.name && form._id) {
-        setForms((prev) => [...prev, form]);
-      } else {
-        console.error("Invalid form data received from API:", form);
-      }
+
+      // Fetch updated workspaces
+      const updatedWorkspaces = await fetchWorkspaces();
+      const currentWorkspace = updatedWorkspaces.find(
+        (ws) => ws._id === workspaces[0]._id
+      );
+
+      setForms(currentWorkspace.forms || []); // Update forms with the latest data
     } catch (err) {
       console.error("Error creating form:", err);
     }
   };
-  
 
   const handleShareWorkspace = (email, permission) => {
     console.log(`Shared workspace with ${email} (${permission})`);
@@ -105,43 +129,20 @@ const Home = () => {
     setIsModalOpen(false);
   };
 
-  useEffect(() => {
-    localStorage.setItem("theme", isLightMode ? "light" : "dark");
-    if (isLightMode) {
-      document.body.classList.add("light");
-    } else {
-      document.body.classList.remove("light");
-    }
-  }, [isLightMode]);
-
   return (
     <div className={styles.home}>
       <div className={styles.homeNav}>
         <div className={styles.homeDropDown}>
           <WorkSpaceDropdown
             workspaces={workspaces}
-            activeWorkspace={workspaces[0] || { id: "default", name: "Select Workspace" }}
+            activeWorkspace={
+              workspaces[0] || { id: "default", name: "Select Workspace" }
+            }
             onWorkspaceChange={handleWorkspaceChange}
           />
         </div>
         <div className={styles.rightNav}>
-          <div className={styles.themeSwitch}>
-            <span>Light</span>
-            <div
-              className={isLightMode ? `${styles.themeLight}` : `${styles.theme}`}
-              onClick={toggleTheme}
-            >
-              <div className={styles.themeDiv}></div>
-              <div
-                className={
-                  isLightMode
-                    ? `${styles.themeClickLight}`
-                    : `${styles.themeClick}`
-                }
-              ></div>
-            </div>
-            <span>Dark</span>
-          </div>
+          <ThemeSwitch />
           <button onClick={() => setIsModalOpen(true)}>Share</button>
         </div>
       </div>
@@ -153,6 +154,8 @@ const Home = () => {
           permissions={permissions}
           onAddFolder={handleAddFolder}
           onAddForm={handleAddForm}
+          onDeleteFolder={handleDeleteFolder}
+          onDeleteForm={handleDeleteForm}
         />
         {isModalOpen && (
           <ShareWorkspaceModal
@@ -166,4 +169,3 @@ const Home = () => {
 };
 
 export default Home;
-

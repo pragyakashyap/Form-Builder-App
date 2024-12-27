@@ -123,4 +123,46 @@ export const createForm = async (formData) => {
       const errorData = await response.json();
       throw new Error(errorData.message || "Failed to create form");
     }
-  };    
+  };   
+  
+  //delete folder
+export const deleteForm = async (formId) =>{
+  const token = localStorage.getItem("token");
+  const response = await fetch(`${BACKEND_URL}api/forms/${formId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`, // Include the token
+    },
+  });
+
+  if (response.ok) {
+    return response.json();
+  } else {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Failed to delete form");
+  }
+}
+
+export const fetchFormById = async (formId) => {
+  const token = localStorage.getItem("token"); 
+  const response = await fetch(`${BACKEND_URL}api/forms/${formId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`, 
+    },
+  });
+
+  if (!response.ok) throw new Error("Failed to fetch form");
+  return await response.json();
+};
+
+
+export const updateForm = async (formId, formData) => {
+  const response = await fetch(`${BACKEND_URL}api/forms/${formId}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(formData),
+  });
+  if (!response.ok) throw new Error("Failed to update form");
+  return await response.json();
+};

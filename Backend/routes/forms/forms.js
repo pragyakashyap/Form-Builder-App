@@ -96,4 +96,17 @@ router.delete("/:formId", authenticateToken, async (req, res) => {
     }
 });
 
+
+router.get("/:formId", authenticateToken, async (req, res) => {
+    try {
+      const { formId } = req.params;
+      const form = await Form.findById(formId);
+      if (!form) return res.status(404).json({ message: "Form not found" });
+      res.status(200).json(form);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server Error" });
+    }
+  });
+  
 export default router;

@@ -1,9 +1,9 @@
 import styles from "./home.module.css";
 
-const DeleteFormModal = ({onConfirm, onCancel }) => {
+const DeleteFormModal = ({message,onConfirm, onCancel }) => {
   return (
     <div className={styles.sharemodal}>
-      <h2>Are you sure you want to delete this form ?</h2>
+      <h2>Are you sure you want to delete this {message} ?</h2>
       <div className={styles.createFolder}>
         <p className={styles.done} onClick={onConfirm}>
           Confirm
