@@ -3,23 +3,28 @@ import authenticateToken from "../../middleware/index.js";
 import Form from "../../schema/form.schema.js";
 import Folder from "../../schema/folder.schema.js";
 import Workspace from "../../schema/workspace.schema.js";
+import crypto from "crypto"
 
 const router = express.Router();
+
+const generateUniqueSlug = () => crypto.randomBytes(8).toString("hex");
 
 // Create Form
 router.post("/", authenticateToken, async (req, res) => {
     try {
         const { name, workspaceId, folderId, components } = req.body;
+        // Generate unique slug
+        const shareableLink = generateUniqueSlug();
         const { id: userId } = req.user;
 
         const workspace = await Workspace.findById(workspaceId);
         console.log(workspace);
-        
+
         if (!workspace || workspace.owner.toString() !== userId) {
             return res.status(403).json({ message: "Unauthorized to add form to this workspace." });
         }
 
-        const newForm = new Form({ name, workspace: workspaceId, folder: folderId || null, components });
+        const newForm = new Form({ name, workspace: workspaceId, folder: folderId || null, components, shareableLink:shareableLink});
         const savedForm = await newForm.save();
 
         if (folderId) {
@@ -99,14 +104,38 @@ router.delete("/:formId", authenticateToken, async (req, res) => {
 
 router.get("/:formId", authenticateToken, async (req, res) => {
     try {
-      const { formId } = req.params;
-      const form = await Form.findById(formId);
-      if (!form) return res.status(404).json({ message: "Form not found" });
+        const { formId } = req.params;
+        const form = await Form.findById(formId);
+        if (!form) return res.status(404).json({ message: "Form not found" });
+        res.status(200).json(form);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server Error" });
+    }
+});
+
+//Fetch Form Data
+router.get("/shareable/:shareableLink", async (req, res) => {
+    const { shareableLink } = req.params;
+  
+    if (!shareableLink || typeof shareableLink !== "string") {
+      return res.status(400).json({ message: "Invalid shareable link" });
+    }
+  
+    try {
+      const form = await Form.findOne({ shareableLink });
+  
+      if (!form) {
+        return res.status(404).json({ message: "Form not found" });
+      }
+  
       res.status(200).json(form);
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching form:", error);
       res.status(500).json({ message: "Server Error" });
     }
   });
   
+  
+
 export default router;
