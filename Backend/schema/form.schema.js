@@ -10,6 +10,7 @@ const formSchema = new mongoose.Schema({
     folder: {
         type: mongoose.Schema.Types.ObjectId, ref: "Folder", default: null
     },
+    shareableLink: { type: String, unique: true },
     components: [
         {
             type: {
@@ -40,6 +41,7 @@ const formSchema = new mongoose.Schema({
                 type: Boolean,
                 default: false
             },
+            
             options: [{ type: String }] // For buttons or dropdown-like inputs
 
         }
