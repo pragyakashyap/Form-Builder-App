@@ -68,7 +68,7 @@ const Settings = () => {
             name="email"
             value={tempData.email}
             onChange={handleInputChange}
-            placeholder="Email"
+            placeholder="Update Email"
           />
         </div>
         <div className={styles.inputContainer}>

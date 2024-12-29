@@ -1,10 +1,33 @@
 import styles from "./home.module.css";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const WorkSpaceDropdown = ({ workspaces, activeWorkspace, onWorkspaceChange }) => {
+const WorkSpaceDropdown = ({
+  workspaces,
+  activeWorkspace,
+  onWorkspaceChange,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState(activeWorkspace);
+
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
+
+  useEffect(() => {
+    setSelected(activeWorkspace);
+  }, [activeWorkspace]);
+   
+  useEffect(() => {
+    const handleThemeChange = () => {
+      const savedTheme = localStorage.getItem("theme") || "dark";
+      setTheme(savedTheme);
+    };
+
+    window.addEventListener("themeChange", handleThemeChange);
+
+    return () => {
+      window.removeEventListener("themeChange", handleThemeChange);
+    };
+  }, []);
 
   const navigate = useNavigate();
 
@@ -15,7 +38,7 @@ const WorkSpaceDropdown = ({ workspaces, activeWorkspace, onWorkspaceChange }) =
       navigate("/settings");
     } else if (workspace._id === "logout") {
       console.log("Logging out...");
-      localStorage.removeItem("token")
+      localStorage.removeItem("token");
       navigate("/login");
     } else {
       onWorkspaceChange(workspace._id);
@@ -27,21 +50,27 @@ const WorkSpaceDropdown = ({ workspaces, activeWorkspace, onWorkspaceChange }) =
       className={styles.workSpaceDropdown}
       onClick={() => setIsOpen(!isOpen)}
     >
-     
-     <div className={styles.selectedOption}>
-     {selected?.name || "Select Workspace"} {/* Use optional chaining and fallback */}
-   </div>
-   
+      <div className={styles.selectedOption}>
+        {selected?.name}
+       
+        {/* Use optional chaining and fallback */}
+      </div>
 
       {/* Dropdown Options */}
       {isOpen && (
-        <div className={styles.dropdownMenu}>
+        <div
+          className={`${styles.dropdownMenu} ${
+            theme === "light" ? styles.light : ""
+          }`}
+        >
           {workspaces
-            .filter(workspace => workspace._id !== selected.id)  // Exclude the selected option
+            .filter((workspace) => workspace._id !== selected.id) // Exclude the selected option
             .map((workspace) => (
               <div
                 key={workspace._id}
-                className={styles.dropdownOption}
+                className={`${styles.dropdownOption} ${
+                  theme === "light" ? styles.light : ""
+                }`}
                 onClick={() => handleWorkspaceChange(workspace)}
               >
                 {workspace.name}

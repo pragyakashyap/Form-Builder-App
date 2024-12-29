@@ -27,7 +27,7 @@ const ShareWorkspaceModal = ({ onClose, onShare }) => {
           onChange={(e) => setPermission(e.target.value)}
           className={styles.permission}
         >
-          <option value="view">View Only</option>
+          <option value="view">View</option>
           <option value="edit">Edit</option>
         </select>
         <button onClick={onShare} className={styles.sendInvite}>

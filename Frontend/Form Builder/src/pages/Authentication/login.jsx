@@ -3,8 +3,9 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import styles from "./authentication.module.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {login} from "../../services"
+import { login } from "../../services";
 import toast from "react-hot-toast";
+import Background from "./background";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -27,28 +28,27 @@ const Login = () => {
   };
 
   useEffect(() => {
-    //overflow: hidden to the body
     document.body.style.overflow = "hidden";
-  
-
     return () => {
-      // Resetting overflow when component unmounts
       document.body.style.overflow = "auto";
     };
   }, []);
 
-  const handleBack = ()=>{
-    navigate("/")
-  }
+  const handleBack = () => {
+    navigate("/");
+  };
 
-  const handleLogin=async(e)=>{
+  const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true);
+      setLoading(() => true);
       const response = await login(formData);
+      console.log(response)
       if (response && response.token) {
         toast.success(response.message || "Login successful!"); // Success toast
+        localStorage.setItem("userEmail", response.email);
         localStorage.setItem("token", response.token);
+        localStorage.setItem("userId", response.id);
         navigate("/home");
       } else if (response && response.message) {
         toast.error(response.message || "Invalid credentials.");
@@ -59,12 +59,16 @@ const Login = () => {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   return (
     <>
       <div className={styles.login}>
-        <FontAwesomeIcon className={styles.icon} icon={faArrowLeft} onClick={handleBack} />
+        <FontAwesomeIcon
+          className={styles.icon}
+          icon={faArrowLeft}
+          onClick={handleBack}
+        />
 
         <form className={styles.loginForm} onSubmit={handleLogin}>
           <label>Email</label>
@@ -78,51 +82,50 @@ const Login = () => {
           <input
             type="password"
             name="password"
-            placeholder="*********"
+            placeholder="**************"
             onChange={handleChange}
           />
-          <button type="submit" className={styles.loginButton}>
-            Log in
-          </button>
-          <div className={styles.loginOption}>OR</div>
-          <button className={styles.loginGoogle}>
-            <div
-              style={{
-                borderRadius: "50%",
-                backgroundColor: "white",
-                padding: "2px",
-                width: "20px",
-                height: "20px",
-              }}
+          <div className={styles.loginButtons}>
+            <button
+              disabled={loading}
+              type="submit"
+              className={styles.loginButton}
             >
-              <img
+              Log in
+            </button>
+            <div className={styles.loginOption}>OR</div>
+            <button className={styles.loginGoogle}>
+              <div
                 style={{
-                  marginTop: "3px",
-                  objectFit: "contain",
-                  width: "15px",
+                  borderRadius: "50%",
+                  backgroundColor: "white",
+                  width: "20px",
+                  height: "20px",
                 }}
-                src="Google Icon.png"
-              />
-            </div>
-            <span style={{ marginLeft: "25%" }}>Sign In with Google</span>
-          </button>
+              >
+                <img
+                  style={{
+                    marginTop: "2px",
+                    objectFit: "contain",
+                    width: "15px",
+                  }}
+                  src="Google Icon.png"
+                />
+              </div>
+              <span style={{ marginLeft: "25%" }}>Sign In with Google</span>
+            </button>
+          </div>
           <div className={styles.loginRegister}>
             <p>
               Don’t have an account?{" "}
-              <span onClick={handleClick}>Register now</span>
+              <span onClick={handleClick} style={{ cursor: "pointer" }}>
+                Register now
+              </span>
             </p>
           </div>
         </form>
       </div>
-      <div className={styles.triangle}>
-        <img src="Group 2.png" />
-      </div>
-      <div className={styles.ellipse1}>
-        <img src="Ellipse 1.png" />
-      </div>
-      <div className={styles.ellipse2}>
-        <img src="Ellipse 2.png" />
-      </div>
+      <Background />
     </>
   );
 };

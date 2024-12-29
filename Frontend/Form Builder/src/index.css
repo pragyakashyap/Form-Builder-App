@@ -6,7 +6,7 @@
   --background-color-light: white;
   --text-color-light: black;
   --background-color-dark: #18181b;
-  --text-color-dark: white;
+  --text-color-dark: white; 
 }
 
 
@@ -16,6 +16,7 @@ body {
   background-color: var(--background-color-dark);
   color: var(--text-color-dark);
   transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+  margin: 0px;
 }
 
 body.light{

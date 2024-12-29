@@ -14,23 +14,42 @@ const WorkSpace = ({
   onDeleteFolder,
   onDeleteForm,
 }) => {
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
+
+  useEffect(() => {
+    const handleThemeChange = () => {
+      const savedTheme = localStorage.getItem("theme") || "dark";
+      setTheme(savedTheme);
+    };
+  
+    window.addEventListener("themeChange", handleThemeChange);
+  
+    return () => {
+      window.removeEventListener("themeChange", handleThemeChange);
+    };
+  }, []);
+  
+  
 
   const navigate = useNavigate();
 
   const handleEditForm = (formId) => {
-    navigate(`/form-editor/${formId}`);
+    console.log("Sending permissions:", permissions); // Add this line
+    navigate(`/form-editor/${formId}`, {
+      state: { permissions }
+    });
   };
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [isFormModalOpen, setFormModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [deleteTarget, setDeleteTarget] = useState(null); // Store folder or form details
+  const [deleteTarget, setDeleteTarget] = useState(null); // folder or form details
   const [deleteType, setDeleteType] = useState(""); // 'folder' or 'form'
 
   const [selectedFolderId, setSelectedFolderId] = useState(null);
 
   const handleFolderClick = (folderId) => {
-    setSelectedFolderId(folderId); // Mark the clicked folder as selected
+    setSelectedFolderId(folderId); 
   };
 
   const handleOpenDeleteModal = (target, type) => {
@@ -41,9 +60,9 @@ const WorkSpace = ({
 
   const handleConfirmDelete = () => {
     if (deleteType === "folder") {
-      onDeleteFolder(deleteTarget._id); // Call the parent delete folder function
+      onDeleteFolder(deleteTarget._id); // Calling the parent delete folder function
     } else if (deleteType === "form") {
-      onDeleteForm(deleteTarget._id); // Call the parent delete form function
+      onDeleteForm(deleteTarget._id); // Calling the parent delete form function
     }
     setDeleteModalOpen(false); // Close the modal
   };
@@ -54,11 +73,11 @@ const WorkSpace = ({
 
   const handleAddForm = (formName) => {
     onAddForm(formName, selectedFolderId); // Add the form to the parent state
-    setFormModalOpen(false); // Close the modal
+    setFormModalOpen(false); 
   };
   const handleAddFolder = (folderName) => {
     onAddFolder(folderName); // Add the form to the parent state
-    setModalOpen(false); // Close the modal
+    setModalOpen(false); 
   };
 
   const workspaceRef = useRef(null);
@@ -82,10 +101,15 @@ const WorkSpace = ({
 
   return (
     <div className={styles.formFolderContainer} ref={workspaceRef}>
-      <div className={styles.folder} >
+      <div className={styles.folder}>
         {permissions === "edit" && (
-          <div className={styles.folderArea} onClick={() => setModalOpen(true)}>
-            <img src="folder.png" />
+          <div
+            className={`${styles.folderArea} ${
+              theme === "light" ? styles.light : ""
+            }`}
+            onClick={() => setModalOpen(true)}
+          >
+            <img src="folder.png" alt="Folder" />
             <span>Create a folder</span>
           </div>
         )}
@@ -93,11 +117,13 @@ const WorkSpace = ({
           <div
             key={folder._id}
             className={`${styles.folderArea} ${
+              theme === "light" ? styles.light : ""
+            } ${
               folder._id === selectedFolderId ? styles.selectedFolder : ""
             }`}
             onClick={() => handleFolderClick(folder._id)}
           >
-            {folder.name || "Unnamed Folder"} {/* Fallback to avoid crash */}
+            {folder.name || "Unnamed Folder"} 
             <img
               className={styles.deleteFolder}
               src="delete.png"
@@ -148,6 +174,7 @@ const WorkSpace = ({
         <AddFolderModal
           onDone={handleAddFolder}
           onCancel={() => setModalOpen(false)}
+          
         />
       )}
       {isFormModalOpen && (

@@ -3,6 +3,7 @@ import { Toaster } from "react-hot-toast";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./protectedRoutes";
 import FormEditor from "./pages/FormEditor/formEditor";
+import FormViewer from "./pages/FormViewer";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
           <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
           <Route path="/form-editor/:formId" element={<ProtectedRoute><FormEditor /></ProtectedRoute>} />
+          <Route path="/forms/:shareableLink" element={<FormViewer />} />
         </Routes>
       </BrowserRouter>
     </>

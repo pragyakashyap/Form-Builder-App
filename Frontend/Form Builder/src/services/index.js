@@ -1,4 +1,4 @@
-import axios from "axios"
+
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
@@ -46,10 +46,30 @@ export const updateUser = async (data) => {
     }
 };
 
-//Workspaces
+//fetch Workspaces
 export const fetchWorkspaces = async()=>{
+  const token = localStorage.getItem("token"); 
+  const response = await fetch(`${BACKEND_URL}api/workspaces`, {
+      method: "GET", 
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, 
+      },
+    });
+  
+    if (!response.ok) {
+      const errorDetails = await response.text();
+      throw new Error(`Failed to load workspace: ${errorDetails}`);
+  }
+  const data = await response.json(); 
+  console.log("API Response:", data); // Log API response
+  return data; 
+}
+
+//Workspaces
+export const fetchWorkspacesById = async(userId)=>{
     const token = localStorage.getItem("token"); 
-    const response = await fetch(`${BACKEND_URL}api/workspaces`, {
+    const response = await fetch(`${BACKEND_URL}api/workspaces/${userId}`, {
         method: "GET", 
         headers: {
           "Content-Type": "application/json",
@@ -157,6 +177,8 @@ export const fetchFormById = async (formId) => {
 };
 
 
+
+
 export const updateForm = async (formId, formData) => {
   const token = localStorage.getItem("token"); 
   const response = await fetch(`${BACKEND_URL}api/forms/${formId}`, {
@@ -169,4 +191,34 @@ export const updateForm = async (formId, formData) => {
   });
   if (!response.ok) throw new Error("Failed to update form");
   return await response.json();
+};
+
+
+export const fetchFormByLink = async (link) => {
+  const token = localStorage.getItem("token"); 
+  const response = await fetch(`${BACKEND_URL}api/forms/shareable/${link}`, {
+    headers: {
+      Authorization: `Bearer ${token}`, 
+    },
+  });
+
+  if (!response.ok) throw new Error("Failed to fetch form");
+  return await response.json();
+};
+
+export const shareworkspace = async (data) => {
+  const response = await fetch(`${BACKEND_URL}api/workspaces/share`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Failed to share workspace");
+  }
+
+  return await response.json(); // Return the parsed JSON response
 };

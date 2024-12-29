@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { register } from "../../services";
+import Background from "./background";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +16,7 @@ const Register = () => {
   });
 
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const navigate = useNavigate();
   const handleClick = () => {
@@ -28,12 +30,18 @@ const Register = () => {
     });
   };
 
-  useEffect(() => {
-    //overflow: hidden to the body
-    document.body.style.overflow = "hidden";
+  const validatePasswords = () => {
+    if (formData.password !== formData.confirmPassword) {
+      setError("Enter same password in both fields");
+      return false;
+    }
+    setError("");
+    return true;
+  };
 
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
     return () => {
-      // Resetting overflow when component unmounts
       document.body.style.overflow = "auto";
     };
   }, []);
@@ -44,22 +52,24 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    try {
-      setLoading(() => true);
-      const response = await register(formData);
-      if (response && response.token) {
-        toast.success(response.message || "Signup successful!");
-        localStorage.setItem("token", response.token);
-        localStorage.setItem("userId", response.id);
-        navigate("/login"); // Redirect to homepage
-      } else if (response && response.message) {
-        toast.error(response.message || "Something went wrong.");
+    if (validatePasswords()) {
+      try {
+        setLoading(() => true);
+        const response = await register(formData);
+        if (response && response.token) {
+          toast.success(response.message || "Signup successful!");
+          localStorage.setItem("token", response.token);
+          localStorage.setItem("userId", response.id);
+          navigate("/login");
+        } else if (response && response.message) {
+          toast.error(response.message || "Something went wrong.");
+        }
+      } catch (error) {
+        toast.error("An unexpected error occurred. Please try again.");
+        console.error(error);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      toast.error("An unexpected error occurred. Please try again.");
-      console.error(error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -71,76 +81,86 @@ const Register = () => {
           icon={faArrowLeft}
           onClick={handleBack}
         />
-        <form className={styles.loginForm} style={{ marginTop: "3%" }} onSubmit={handleRegister}>
-          <label style={{ margin: "0.2rem 0px" }}>Username</label>
+        <form
+          className={styles.loginForm}
+          style={{ marginTop: "0.5%" }}
+          onSubmit={handleRegister}
+        >
+          <label>Username</label>
           <input
             type="String"
             name="name"
             placeholder="Enter a username"
             onChange={handleChange}
+            required
           />
-          <label style={{ margin: "0.2rem 0px" }}>Email</label>
+          <label>Email</label>
           <input
             type="email"
             name="email"
             placeholder="Enter your email"
             onChange={handleChange}
+            required
           />
-          <label style={{ margin: "0.2rem 0px" }}>Password</label>
+          <label>Password</label>
           <input
             type="password"
             name="password"
             placeholder="*********"
             onChange={handleChange}
+            required
           />
-          <label style={{ margin: "0.2rem 0px" }}>Confirm Password</label>
+          <label className={error ? styles.errorLabel : ''}>Confirm Password</label>
           <input
             type="password"
-            name="password"
+            name="confirmPassword"
             placeholder="*********"
             onChange={handleChange}
+            className={error ? styles.error : ''}
+           
           />
-          <button type="submit" className={styles.loginButton}>
-            Sign Up
-          </button>
-          <div className={styles.loginOption}>OR</div>
-          <button className={styles.loginGoogle}>
-            <div
-              style={{
-                borderRadius: "50%",
-                backgroundColor: "white",
-                padding: "2px",
-                width: "20px",
-                height: "20px",
-              }}
+          {error && <span className={styles.errorMessage}>{error}</span>}
+          <div className={styles.loginButtons}>
+            <button
+              disabled={loading}
+              type="submit"
+              className={styles.loginButton}
             >
-              <img
+              Sign Up
+            </button>
+            <div className={styles.loginOption}>OR</div>
+            <button className={styles.loginGoogle}>
+              <div
                 style={{
-                  marginTop: "3px",
-                  objectFit: "contain",
-                  width: "15px",
+                  borderRadius: "50%",
+                  backgroundColor: "white",
+                  width: "20px",
+                  height: "20px",
                 }}
-                src="Google Icon.png"
-              />
-            </div>
-            <span style={{ marginLeft: "25%" }}>Sign Up with Google</span>
-          </button>
+              >
+                <img
+                  style={{
+                    marginTop: "2px",
+                    objectFit: "contain",
+                    width: "15px",
+                  }}
+                  src="Google Icon.png"
+                />
+              </div>
+              <span style={{ marginLeft: "25%" }}>Sign Up with Google</span>
+            </button>
+          </div>
           <div className={styles.loginRegister}>
             <p>
-              Already have an account ? <span onClick={handleClick}>Login</span>
+              Already have an account ?{" "}
+              <span onClick={handleClick} style={{ cursor: "pointer" }}>
+                Login
+              </span>
             </p>
           </div>
         </form>
       </div>
-      <div className={styles.triangle}>
-        <img src="Group 2.png" />
-      </div>
-      <div className={styles.ellipse1}>
-        <img src="Ellipse 1.png" />
-      </div>
-      <div className={styles.ellipse2}>
-        <img src="Ellipse 2.png" />
-      </div>
+      <Background />
     </>
   );
 };

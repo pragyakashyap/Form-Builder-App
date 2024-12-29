@@ -12,8 +12,14 @@ const ThemeSwitch = () => {
     }
   }, [isLightMode]);
   const toggleTheme = () => {
-    setIsLightMode((prev) => !prev);
+    const newTheme = isLightMode ? "dark" : "light";
+    setIsLightMode(!isLightMode);
+    localStorage.setItem("theme", newTheme);
+  
+    // Dispatch a custom event
+    window.dispatchEvent(new Event("themeChange"));
   };
+  
   return (
     <div className={styles.themeSwitch}>
       <span>Light</span>

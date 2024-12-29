@@ -1,5 +1,6 @@
 .home {
   font-size: 14px;
+  margin: 10px;
 }
 
 .homeNav {
@@ -54,6 +55,10 @@
   
 }
 
+.dropdownMenu.light{
+  background: white;
+}
+
 .dropdownOption {
   padding: 10px;
   cursor: pointer;
@@ -87,6 +92,10 @@
   border-radius: 8px;
   padding: 10px;
   cursor: pointer;
+}
+div.folderArea.light{
+  background-color: white;
+  border: 1px solid #333336;
 }
 .formFolderContainer {
   margin-left: 15%;
@@ -136,6 +145,7 @@
   border: none;
   border-radius: 12px;
   cursor: pointer;
+  box-shadow: 0 4px 4px #e9444b30;
 }
 .shareForm input,
 .sharemodal input {
@@ -209,4 +219,8 @@
 .selectedFolder {
   background-color: white;
   color: black;
+}
+
+.addfolder.light{
+  background-color: white;
 }
