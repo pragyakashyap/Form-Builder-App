@@ -4,6 +4,9 @@ import folder from "./folder.schema.js"
 
 const formSchema = new mongoose.Schema({
     name: { type: String, required: true },
+    views: { type: Number, default: 0 },
+    starts: { type: Number, default: 0 },
+    completed: { type: Number, default: 0 },
     workspace: {
         type: mongoose.Schema.Types.ObjectId, ref: "Workspace", required: true
     },
@@ -15,12 +18,7 @@ const formSchema = new mongoose.Schema({
         {
             type: {
                 type: String,
-                enum: ["bubble", "input"],
-                required: true
-            },
-            subType: {
-                type: String,
-                enum: ["text", "image", "textInput", "email", "number", "phone", "date", "rating", "buttons"],
+                enum: ["bubble", "input", "Text", "Image", "Input Text", "Input Number", "Input Phone", "Input Date", "Input Email", "Input Button","Input Rating"],
                 required: true
             },
             name: {
@@ -34,19 +32,14 @@ const formSchema = new mongoose.Schema({
             content: {
                 type: String // For bubble text or image URL
             },
-            label: {
-                type: String //for input fields
-            },
             required: {
                 type: Boolean,
                 default: false
             },
-            
             options: [{ type: String }] // For buttons or dropdown-like inputs
-
         }
     ]
-})
+});
 
-const form = mongoose.model("Form",formSchema)
-export default form
+const Form = mongoose.model("Form", formSchema);
+export default Form;

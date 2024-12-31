@@ -6,6 +6,7 @@ import userRoutes from "./routes/authentication/user.js"
 import workspaceRoutes from "./routes/workspace/workspace.js"
 import folderRoutes from "./routes/folder/folder.js"
 import formRoutes from "./routes/forms/forms.js"
+import formResponseRoutes from "./routes/form-response/form-response.js"
 import cors from "cors"
 
 connectDB()
@@ -39,6 +40,7 @@ app.use("/api/user", userRoutes)
 app.use("/api/workspaces", workspaceRoutes)
 app.use("/api/folders", folderRoutes)
 app.use("/api/forms", formRoutes)
+app.use("/api/forms-response", formResponseRoutes)
 
 app.get("/", (req, res) => {
     res.send("Hello world!")

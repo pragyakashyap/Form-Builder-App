@@ -4,6 +4,7 @@ import Form from "../../schema/form.schema.js";
 import Folder from "../../schema/folder.schema.js";
 import Workspace from "../../schema/workspace.schema.js";
 import crypto from "crypto"
+import mongoose from "mongoose"
 
 const router = express.Router();
 
@@ -135,6 +136,65 @@ router.get("/shareable/:shareableLink", async (req, res) => {
       res.status(500).json({ message: "Server Error" });
     }
   });
+
+  // Increment view count every time the form is viewed
+router.post('/track-view', async (req, res) => {
+    const { formId } = req.body;
+
+    try {
+        const formObjectId = new  mongoose.Types.ObjectId(formId);
+        const form = await Form.findById(formObjectId);
+
+        if (form) {
+            form.views += 1;
+            await form.save();
+            res.status(200).send({message:'View tracked'});
+        } else {
+            res.status(404).send('Form not found');
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).send('Error tracking view');
+    }
+});
+
+// Increment start count when user begins filling the form
+router.post('/track-start', async (req, res) => {
+    const { formId } = req.body;
+
+    try {
+        const formObjectId = new  mongoose.Types.ObjectId(formId);
+        const form = await Form.findById(formObjectId );
+        if (form) {
+            form.starts += 1;
+            await form.save();
+            res.status(200).send({message:'Start tracked'});
+        } else {
+            res.status(404).send('Form not found');
+        }
+    } catch (error) {
+        res.status(500).send('Error tracking start');
+    }
+});
+
+// Increment completion count when user submits the form
+router.post('/track-completion', async (req, res) => {
+    const { formId } = req.body;
+
+    try {
+        const formObjectId = new  mongoose.Types.ObjectId(formId);
+        const form = await Form.findById(formObjectId);
+        if (form) {
+            form.completed += 1;
+            await form.save();
+            res.status(200).send({message:'Completion tracked'});
+        } else {
+            res.status(404).send('Form not found');
+        }
+    } catch (error) {
+        res.status(500).send('Error tracking completion');
+    }
+});
   
   
 
