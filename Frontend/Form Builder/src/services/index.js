@@ -222,3 +222,110 @@ export const shareworkspace = async (data) => {
 
   return await response.json(); // Return the parsed JSON response
 };
+
+export const submitForm = async (formId, responses) => {
+  try {
+    const response = await fetch(`${BACKEND_URL}api/forms-response/submit-form`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        formId,
+        responses,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to submit the form");
+    }
+
+    return { success: true, message: "Form submitted successfully!" };
+  } catch (error) {
+    console.error("Error submitting form:", error);
+    return { success: false, message: "Failed to submit the form. Please try again." };
+  }
+};
+
+export const fetchFormResponses = async (formId) => {
+  try {
+    const response = await fetch(`${BACKEND_URL}api/forms-response/${formId}`, {
+      method: "GET",
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch form responses");
+    }
+
+    const data = await response.json();
+    return { success: true, data };
+  } catch (error) {
+    console.error("Error fetching form responses:", error);
+    return { success: false, message: "Failed to fetch form responses" };
+  }
+};
+
+
+export const trackView = async (formId) => {
+  try {
+    const response = await fetch(`${BACKEND_URL}api/forms/track-view`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ formId }),
+    });
+    
+    if (!response.ok) {
+      throw new Error("Failed to track view");
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error("Error tracking view:", error);
+    throw error;
+  }
+};
+
+export const trackStart = async (formId) => {
+  try {
+    const response = await fetch(`${BACKEND_URL}api/forms/track-start`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ formId }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to track start");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error tracking start:", error);
+    throw error;
+  }
+};
+
+export const trackCompletion = async (formId) => {
+  try {
+    const response = await fetch(`${BACKEND_URL}api/forms/track-completion`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ formId }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to track completion");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error tracking completion:", error);
+    throw error;
+  }
+};
+

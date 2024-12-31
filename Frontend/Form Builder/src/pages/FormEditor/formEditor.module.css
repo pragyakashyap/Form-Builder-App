@@ -47,6 +47,7 @@
 }
 .mainArea {
   display: flex;
+  height: 100%;
 }
 .bubblesAndInputs {
   margin: 12px 2px;

@@ -15,6 +15,7 @@ import { ButtonInput } from "./inputs/buttonInput";
 import toast from "react-hot-toast";
 import deleteIcon from "/delete.png";
 import closeIcon from "/close.png";
+import FormResponses from "./formResponse";
 
 const FormEditor = () => {
   const { formId } = useParams();
@@ -25,7 +26,6 @@ const FormEditor = () => {
   const [formName, setFormName] = useState("");
 
   const location = useLocation();
-console.log("Location received:", location); // Add this line
 
   const [permissions, setPermissions] = useState(
     location.state?.permissions || "edit"
@@ -152,6 +152,8 @@ console.log("Location received:", location); // Add this line
     };
   }, []);
 
+  const [activeView, setActiveView] = useState("flow");
+
   return (
     <div
       className={`${styles.FormEditor} ${
@@ -177,10 +179,18 @@ console.log("Location received:", location); // Add this line
         </div>
 
         <div className={styles.topBarFlowAndResponse}>
-          <button className={styles.flow} disabled={permissions === "view"}>
+          <button
+            className={styles.flow}
+            disabled={permissions === "view"}
+            onClick={() => setActiveView("flow")}
+          >
             Flow
           </button>
-          <button className={styles.response} disabled={permissions === "view"}>
+          <button
+            className={styles.response}
+            disabled={permissions === "view"}
+            onClick={() => setActiveView("response")}
+          >
             Response
           </button>
         </div>
@@ -204,185 +214,197 @@ console.log("Location received:", location); // Add this line
       </div>
 
       <div className={styles.mainArea}>
-        {/* Left Panel */}
-        <div
-          className={`${styles.leftPanel} ${
-            theme === "light" ? styles.light : ""
-          }`}
-        >
-          <div className={styles.bubblesAndInputs}>
-            <div className={styles.bubbles}>
-              <p style={{ fontSize: "14px" }}>Bubbles</p>
-              <div className={styles.contents}>
-                <div
-                  className={`${styles.content} ${
-                    theme === "light" ? styles.light : ""
-                  }`}
-                  onClick={() => handleAddComponent("Text", "bubble")}
-                >
-                  <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735400510/SVG_3_atf6zu.png" />
-                  Text
-                </div>
-                <div
-                  className={`${styles.content} ${
-                    theme === "light" ? styles.light : ""
-                  }`}
-                  onClick={() => handleAddComponent("Image", "bubble")}
-                >
-                  <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735400510/SVG_4_pb5shf.png" />
-                  Image
-                </div>
-              </div>
-              <div className={styles.contents}>
-                <div
-                  className={`${styles.content} ${
-                    theme === "light" ? styles.light : ""
-                  }`}
-                >
-                  <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735400510/Group_14_1_k3iegq.png" />
-                  Video
-                </div>
-                <div
-                  className={`${styles.content} ${
-                    theme === "light" ? styles.light : ""
-                  }`}
-                >
-                  <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735400510/Container_1_m6wdyq.png" />
-                  GIF
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.inputs}>
-              <p style={{ fontSize: "14px" }}>Inputs</p>
-              <div className={styles.contents}>
-                <div
-                  className={`${styles.content} ${
-                    theme === "light" ? styles.light : ""
-                  }`}
-                  onClick={() => handleAddComponent("Input Text", "input")}
-                >
-                  <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735401694/SVG_11_djqhpq.png" />
-                  Text
-                </div>
-                <div
-                  className={`${styles.content} ${
-                    theme === "light" ? styles.light : ""
-                  }`}
-                  onClick={() => handleAddComponent("Input Number", "input")}
-                >
-                  <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735401974/SVG_12_c0y8px.png" />
-                  Number
-                </div>
-              </div>
-              <div className={styles.contents}>
-                <div
-                  className={`${styles.content} ${
-                    theme === "light" ? styles.light : ""
-                  }`}
-                  onClick={() => handleAddComponent("Input Email", "input")}
-                >
-                  <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735401694/SVG_10_iuhe3v.png" />
-                  Email
-                </div>
-                <div
-                  className={`${styles.content} ${
-                    theme === "light" ? styles.light : ""
-                  }`}
-                  onClick={() => handleAddComponent("Input Phone", "input")}
-                >
-                  <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735401694/SVG_7_dghv8g.png" />
-                  Phone
-                </div>
-              </div>
-
-              <div className={styles.contents}>
-                <div
-                  className={`${styles.content} ${
-                    theme === "light" ? styles.light : ""
-                  }`}
-                  onClick={() => handleAddComponent("Input Date", "input")}
-                >
-                  <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735401693/SVG_9_lekigc.png" />
-                  Date
-                </div>
-                <div
-                  className={`${styles.content} ${
-                    theme === "light" ? styles.light : ""
-                  }`}
-                  onClick={() => handleAddComponent("Input Rating", "input")}
-                >
-                  <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735400510/rating_2_ll3pvc.png" />
-                  Rating
-                </div>
-              </div>
-
-              <div className={styles.contents}>
-                <div
-                  className={`${styles.content} ${
-                    theme === "light" ? styles.light : ""
-                  }`}
-                  onClick={() => handleAddComponent("Input Button", "input")}
-                >
-                  <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735401693/SVG_8_ygxqjc.png" />
-                  Button
-                </div>
-                <div
-                  className={styles.content}
-                  style={{ visibility: "hidden" }}
-                ></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Right Panel */}
-        <div className={styles.rightPanel}>
-          <div
-            className={`${styles.start} ${
-              theme === "light" ? styles.light : ""
-            }`}
-          >
-            <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735298664/Vector_6_du4oob.png" />
-            Start
-          </div>
-
-          {components.map((component, index) => {
-            const Component = componentMapping[component.type];
-
-            return (
-              <div className={styles.componentWrapper} key={index}>
-                {/* Delete Button */}
-                {permissions === "edit" && (
-                  <div
-                    className={styles.deleteIcon}
-                    onClick={() => handleDeleteComponent(index)}
-                  >
-                    <img src={deleteIcon} />
+        {activeView === "flow" ? (
+          <>
+            {/* Left Panel */}
+            <div
+              className={`${styles.leftPanel} ${
+                theme === "light" ? styles.light : ""
+              }`}
+            >
+              <div className={styles.bubblesAndInputs}>
+                <div className={styles.bubbles}>
+                  <p style={{ fontSize: "14px" }}>Bubbles</p>
+                  <div className={styles.contents}>
+                    <div
+                      className={`${styles.content} ${
+                        theme === "light" ? styles.light : ""
+                      }`}
+                      onClick={() => handleAddComponent("Text", "bubble")}
+                    >
+                      <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735400510/SVG_3_atf6zu.png" />
+                      Text
+                    </div>
+                    <div
+                      className={`${styles.content} ${
+                        theme === "light" ? styles.light : ""
+                      }`}
+                      onClick={() => handleAddComponent("Image", "bubble")}
+                    >
+                      <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735400510/SVG_4_pb5shf.png" />
+                      Image
+                    </div>
                   </div>
-                )}
+                  <div className={styles.contents}>
+                    <div
+                      className={`${styles.content} ${
+                        theme === "light" ? styles.light : ""
+                      }`}
+                    >
+                      <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735400510/Group_14_1_k3iegq.png" />
+                      Video
+                    </div>
+                    <div
+                      className={`${styles.content} ${
+                        theme === "light" ? styles.light : ""
+                      }`}
+                    >
+                      <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735400510/Container_1_m6wdyq.png" />
+                      GIF
+                    </div>
+                  </div>
+                </div>
 
-                {/* Render the actual component */}
-                {component.category === "bubble" ? (
-                  <Component
-                    name={component.name}
-                    content={component.content || ""}
-                    onContentChange={(newContent) =>
-                      handleContentChange(index, newContent)
-                    }
-                    disabled={permissions === "view"}
-                  />
-                ) : (
-                  <Component
-                    name={component.name}
-                    isInput
-                    disabled={permissions === "view"}
-                  />
-                )}
+                <div className={styles.inputs}>
+                  <p style={{ fontSize: "14px" }}>Inputs</p>
+                  <div className={styles.contents}>
+                    <div
+                      className={`${styles.content} ${
+                        theme === "light" ? styles.light : ""
+                      }`}
+                      onClick={() => handleAddComponent("Input Text", "input")}
+                    >
+                      <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735401694/SVG_11_djqhpq.png" />
+                      Text
+                    </div>
+                    <div
+                      className={`${styles.content} ${
+                        theme === "light" ? styles.light : ""
+                      }`}
+                      onClick={() =>
+                        handleAddComponent("Input Number", "input")
+                      }
+                    >
+                      <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735401974/SVG_12_c0y8px.png" />
+                      Number
+                    </div>
+                  </div>
+                  <div className={styles.contents}>
+                    <div
+                      className={`${styles.content} ${
+                        theme === "light" ? styles.light : ""
+                      }`}
+                      onClick={() => handleAddComponent("Input Email", "input")}
+                    >
+                      <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735401694/SVG_10_iuhe3v.png" />
+                      Email
+                    </div>
+                    <div
+                      className={`${styles.content} ${
+                        theme === "light" ? styles.light : ""
+                      }`}
+                      onClick={() => handleAddComponent("Input Phone", "input")}
+                    >
+                      <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735401694/SVG_7_dghv8g.png" />
+                      Phone
+                    </div>
+                  </div>
+
+                  <div className={styles.contents}>
+                    <div
+                      className={`${styles.content} ${
+                        theme === "light" ? styles.light : ""
+                      }`}
+                      onClick={() => handleAddComponent("Input Date", "input")}
+                    >
+                      <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735401693/SVG_9_lekigc.png" />
+                      Date
+                    </div>
+                    <div
+                      className={`${styles.content} ${
+                        theme === "light" ? styles.light : ""
+                      }`}
+                      onClick={() =>
+                        handleAddComponent("Input Rating", "input")
+                      }
+                    >
+                      <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735400510/rating_2_ll3pvc.png" />
+                      Rating
+                    </div>
+                  </div>
+
+                  <div className={styles.contents}>
+                    <div
+                      className={`${styles.content} ${
+                        theme === "light" ? styles.light : ""
+                      }`}
+                      onClick={() =>
+                        handleAddComponent("Input Button", "input")
+                      }
+                    >
+                      <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735401693/SVG_8_ygxqjc.png" />
+                      Button
+                    </div>
+                    <div
+                      className={styles.content}
+                      style={{ visibility: "hidden" }}
+                    ></div>
+                  </div>
+                </div>
               </div>
-            );
-          })}
-        </div>
+            </div>
+
+            {/* Right Panel */}
+            <div className={styles.rightPanel}>
+              <div
+                className={`${styles.start} ${
+                  theme === "light" ? styles.light : ""
+                }`}
+              >
+                <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735298664/Vector_6_du4oob.png" />
+                Start
+              </div>
+
+              {components.map((component, index) => {
+                const Component = componentMapping[component.type];
+
+                return (
+                  <div className={styles.componentWrapper} key={index}>
+                    {/* Delete Button */}
+                    {permissions === "edit" && (
+                      <div
+                        className={styles.deleteIcon}
+                        onClick={() => handleDeleteComponent(index)}
+                      >
+                        <img src={deleteIcon} />
+                      </div>
+                    )}
+
+                    {/* Render the actual component */}
+                    {component.category === "bubble" ? (
+                      <Component
+                        name={component.name}
+                        content={component.content || ""}
+                        onContentChange={(newContent) =>
+                          handleContentChange(index, newContent)
+                        }
+                        disabled={permissions === "view"}
+                      />
+                    ) : (
+                      <Component
+                        name={component.name}
+                        isInput
+                        disabled={permissions === "view"}
+                      />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        ) : (
+          form && <FormResponses formId={form._id} formComponents={form.components} />
+        )}
       </div>
     </div>
   );

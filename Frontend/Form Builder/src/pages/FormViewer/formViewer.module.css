@@ -1,0 +1,96 @@
+.formViewer {
+  width: 70%;
+  margin: auto;
+  color: black;
+  padding: 8px;
+}
+.componentsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+}
+.components {
+  background-color: #f7f8ff;
+  padding: 8px;
+  border-radius: 8px;
+  width: fit-content;
+}
+h1 {
+  text-align: center;
+}
+.componentsContainer {
+  margin-top: 50px;
+}
+.bubble {
+  border-radius: 8px;
+}
+
+.input {
+  float: right;
+  padding: 18px;
+  border-radius: 5px;
+  border: none;
+  box-shadow: 0 4px 6.3px #00000025;
+  width: 25%;
+  display: flex;
+  justify-content: space-around;
+  
+}
+.ratingInput{
+    color:white;
+    
+}
+
+.button {
+  cursor: pointer;
+  background-color: #1a5fff;
+ border-radius: 5px;
+ padding: 5px;
+ display: flex;
+ justify-content: center;
+ align-items:center ;
+}
+
+.button img{
+    width: 30px;
+    height: 25px;
+}
+
+.inputcomponents{
+    display: flex;
+    justify-content: flex-end;
+    gap: 14px;
+
+}
+
+.ratings{
+    border-radius: 50%;
+    background-color: #1A5FFF;
+    width: 25px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+}
+.ratings:hover{
+    background-color: #FF8E21;
+}
+.submit{
+    width: 30%;
+    padding: 8px;
+    border-radius: 5px;
+    background-color: #1A5FFF;
+    color: white;
+    margin: auto;
+    cursor: pointer;
+}
+
+@media (max-width:641px){
+    .formViewer {
+        width: 100%;
+    }
+    .inputcomponents{
+        margin-right: 18px;
+    }
+}
