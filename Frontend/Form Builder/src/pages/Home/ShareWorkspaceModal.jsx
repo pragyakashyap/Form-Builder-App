@@ -30,11 +30,11 @@ const ShareWorkspaceModal = ({ onClose, onShare }) => {
           <option value="view">View</option>
           <option value="edit">Edit</option>
         </select>
-        <button onClick={onShare} className={styles.sendInvite}>
+        <button  type="submit" className={styles.sendInvite}>
           Send Invite
         </button>
         <h3>Invite by Link</h3>
-        <button onClick={onShare} className={styles.sendInvite}>
+        <button type="button"  onClick={() => onShare(email, "view")} className={styles.sendInvite}>
           Copy link
         </button>
       </form>

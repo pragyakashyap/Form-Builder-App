@@ -51,13 +51,29 @@ const FormResponse = ({ formId, formComponents }) => {
     loadStats();
   }, [formId]);
 
+  const formatDate = (dateString) => {
+    const options = {
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    };
+  
+    return new Intl.DateTimeFormat("en-US", options).format(new Date(dateString));
+  };
+  
+
   if (loading) return <p>Loading responses...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className={styles.container}>
-      {/* Stats Overview */}
-      <div className={styles.statsGrid}>
+    <>
+    {responses.length===0 ? (
+      <p className={styles.noResponse}>No Response yet collected</p>
+    ) : (
+      <div className={styles.container}>
+         <div className={styles.statsGrid}>
         <div className={styles.statsCard}>
           <h3 className={styles.statsLabel}>Views</h3>
           <p className={styles.statsValue}>{stats.views}</p>
@@ -68,12 +84,12 @@ const FormResponse = ({ formId, formComponents }) => {
         </div>
       </div>
 
-      {/* Responses Table */}
+    
       <div className={styles.tableContainer}>
         <table className={styles.responsesTable}>
           <thead>
             <tr>
-              <th>#</th> {/* Serial Number Column */}
+              <th></th> {/* Serial Number Column */}
               <th>Submitted at</th>
               {formComponents
                 .filter(
@@ -92,7 +108,7 @@ const FormResponse = ({ formId, formComponents }) => {
             {responses.map((response, index) => (
               <tr key={index}>
                 <td>{index + 1}</td> {/* Serial Number */}
-                <td>{new Date(response.submissionDate).toLocaleString()}</td>
+                <td>{formatDate(response.submissionDate)}</td>
                 {formComponents
                   .filter(
                     (component) =>
@@ -130,7 +146,10 @@ const FormResponse = ({ formId, formComponents }) => {
           </p>
         </div>
       </div>
-    </div>
+        </div>   
+    )}
+    </>
+   
   );
 };
 

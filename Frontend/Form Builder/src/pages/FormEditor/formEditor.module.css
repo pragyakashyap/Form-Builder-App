@@ -93,7 +93,7 @@
 .start,
 .componentWrapper {
   background-color: #18181b;
-  width: 20%;
+  width: 300px;
   padding: 1rem;
   border-radius: 10px;
 }
@@ -148,11 +148,13 @@
   color: #7EA6FF;
   border-color: #7EA6FF;
   border-radius: 6px;
+  cursor: pointer;
 }
 .response{
   background:transparent;
   border: none;
   color: white;
+  cursor: pointer;
 }
 
 .shareAndSave button{
@@ -162,6 +164,7 @@
   width: 4.063em;
   height: 1.563em;
   border: none;
+  cursor: pointer;
 }
 .share{
   background-color: #1A5FFF;
@@ -183,4 +186,32 @@
 .component.disabled input {
   cursor: not-allowed;
   background-color: #f0f0f0;
+}
+
+.share:disabled{
+background-color: #848890;
+}
+
+/* Light theme compatibility */
+
+:global(.light) .componentWrapper{
+  background-color: #f4f4f5;
+  color: #27272a;
+}
+:global(.light) .mainArea{
+  background-color: white;
+}
+:global(.light) .component input{
+  background-color: #f4f4f5;
+}
+:global(.light) .deleteIcon {
+  background: none;
+  border:1px solid #D6D6D6
+}
+:global(.light) .deleteIcon,:global(.light) .leftPanel,:global(.light) .content,:global(.light) .topBarFormName input,:global(.light) .start,:global(.light) .component button,:global(.light) .topBar {
+  background-color: white;
+  border-color: #D6D6D6
+}
+:global(.light) .response{
+  color:black
 }

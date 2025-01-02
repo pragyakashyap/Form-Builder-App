@@ -105,6 +105,18 @@
   
 }
 
+.noResponse{
+  text-align: center;
+  background:none;
+  text-align: center;
+  margin:auto;
+  position: absolute;
+  top: 50%;
+  left: 38%;
+  font-size: 28px;
+  color: #696969;
+}
+
 /* Dark theme compatibility */
 :global(.dark) .statsCard,
 :global(.dark) .tableContainer {

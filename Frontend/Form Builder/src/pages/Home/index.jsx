@@ -28,21 +28,18 @@ const Home = () => {
   const userEmail = localStorage.getItem("userEmail"); 
 
   const determineUserPermissions = (workspace) => {
-    // If there's no workspace, return edit as default
+
     if (!workspace) return "edit";
     
-    // If there's no sharedWith array or it's empty, the user must be the owner
+   
     if (!workspace.sharedWith || workspace.sharedWith.length === 0) {
       return "edit";
     }
     
-    // Find if current user exists in sharedWith array
     const currentUserShare = workspace.sharedWith.find(
       share => share.email === userEmail
     );
 
-    // If user is found in sharedWith, return their permission
-    // Otherwise return "edit" (assuming they're the owner)
     return currentUserShare ? currentUserShare.permission : "edit";
   };
 
@@ -183,13 +180,14 @@ const Home = () => {
 
   const handleShareWorkspace = async (email, permission) => {
     try {
-      const workspace = await shareworkspace({
-        workspaceId: activeWorkspace._id, // Ensure this points to the correct workspace
+      const data = {
+        workspaceId: activeWorkspace._id,
         email,
-        permission,
-      });
+        permission
+      };
 
-      console.log(`Shared workspace with ${email} (${permission})`);
+      const workspace = await shareworkspace(data);
+      toast.success(`Shared workspace with ${email} (${permission})`)
 
       // Update the specific workspace in the state
       setWorkspaces((prevWorkspaces) =>

@@ -15,7 +15,14 @@
   padding: 8px;
   border-radius: 8px;
   width: fit-content;
+
 }
+.textbubble{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 h1 {
   text-align: center;
 }
@@ -67,15 +74,22 @@ h1 {
 .ratings{
     border-radius: 50%;
     background-color: #1A5FFF;
-    width: 25px;
+    width: 20px;
+    height: 20px;
     display: flex;
     justify-content: center;
     text-align: center;
     cursor: pointer;
+    font-size: 12px;
+    align-items: center;
 }
-.ratings:hover{
-    background-color: #FF8E21;
+.ratings.selected{
+  background-color: #FF8E21;
 }
+
+ .ratings:focus{
+  background-color: #FF8E21;
+ }
 .submit{
     width: 30%;
     padding: 8px;
@@ -84,6 +98,10 @@ h1 {
     color: white;
     margin: auto;
     cursor: pointer;
+}
+.submitted,.submittedButton{
+  background-color: #777777;
+  color: white;
 }
 
 @media (max-width:641px){

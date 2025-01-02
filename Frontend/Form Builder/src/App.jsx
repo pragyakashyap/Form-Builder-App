@@ -4,10 +4,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./protectedRoutes";
 import FormEditor from "./pages/FormEditor/formEditor";
 import FormViewer from "./pages/FormViewer";
-import FormStats from "./pages/FormStats";
+import { useTheme,ThemeContext } from "./ThemeContext";
+import { useState } from "react";
 
 function App() {
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
   return (
+    <ThemeContext.Provider value={{ theme, setTheme }}>
     <>
       <Toaster />
       <BrowserRouter
@@ -17,14 +20,35 @@ function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-          <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-          <Route path="/form-editor/:formId" element={<ProtectedRoute><FormEditor /></ProtectedRoute>} />
+          <Route
+            path="/home"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <Settings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/form-editor/:formId"
+            element={
+              <ProtectedRoute>
+                <FormEditor />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/forms/:shareableLink" element={<FormViewer />} />
-          <Route path="/form-stats" element={<ProtectedRoute><FormStats /></ProtectedRoute>} />
         </Routes>
       </BrowserRouter>
     </>
+    </ThemeContext.Provider>
   );
 }
 

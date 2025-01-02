@@ -34,7 +34,7 @@ const WorkSpace = ({
   const navigate = useNavigate();
 
   const handleEditForm = (formId) => {
-    console.log("Sending permissions:", permissions); // Add this line
+    console.log("Sending permissions:", permissions);
     navigate(`/form-editor/${formId}`, {
       state: { permissions }
     });
@@ -50,6 +50,7 @@ const WorkSpace = ({
 
   const handleFolderClick = (folderId) => {
     setSelectedFolderId(folderId); 
+    console.log(folderId)
   };
 
   const handleOpenDeleteModal = (target, type) => {
@@ -72,11 +73,11 @@ const WorkSpace = ({
   };
 
   const handleAddForm = (formName) => {
-    onAddForm(formName, selectedFolderId); // Add the form to the parent state
+    onAddForm(formName, selectedFolderId); // Adding the form to the parent state
     setFormModalOpen(false); 
   };
   const handleAddFolder = (folderName) => {
-    onAddFolder(folderName); // Add the form to the parent state
+    onAddFolder(folderName); // Adding the form to the parent state
     setModalOpen(false); 
   };
 
@@ -148,9 +149,9 @@ const WorkSpace = ({
         {forms
           .filter(
             (form) =>
-              selectedFolderId
-                ? form.folderId === selectedFolderId // Show forms in the selected folder
-                : !form.folderId // Show only forms outside folders
+              selectedFolderId === null //Show only forms outside folders
+                ? !form.folder 
+                :  form.folder === selectedFolderId // Show forms in the selected folder
           )
           .map((form) => (
             <div

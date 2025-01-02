@@ -16,6 +16,7 @@ import toast from "react-hot-toast";
 import deleteIcon from "/delete.png";
 import closeIcon from "/close.png";
 import FormResponses from "./formResponse";
+import { useTheme } from "../../ThemeContext";
 
 const FormEditor = () => {
   const { formId } = useParams();
@@ -34,6 +35,7 @@ const FormEditor = () => {
     console.log("Current permissions:", permissions);
     console.log("Location state:", location.state);
   }, [permissions]);
+
 
   const handleFormNameChange = (e) => {
     if (permissions === "view") return;
@@ -137,20 +139,14 @@ const FormEditor = () => {
     }
   };
 
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
+  const handleDelete = ()=>{
+    setComponents(()=>[])
+  }
 
-  useEffect(() => {
-    const handleThemeChange = () => {
-      const savedTheme = localStorage.getItem("theme") || "dark";
-      setTheme(savedTheme);
-    };
 
-    window.addEventListener("themeChange", handleThemeChange);
+  const { theme } = useTheme();
 
-    return () => {
-      window.removeEventListener("themeChange", handleThemeChange);
-    };
-  }, []);
+
 
   const [activeView, setActiveView] = useState("flow");
 
@@ -198,16 +194,16 @@ const FormEditor = () => {
         <div className={styles.rightTopBar}>
           <ThemeSwitch />
           <div className={styles.shareAndSave}>
-            <button className={styles.share} onClick={handleShare}>
+            <button className={styles.share} onClick={handleShare} disabled={components.length===0}>
               Share
             </button>
             {permissions === "edit" && (
-              <button className={styles.save} onClick={handleSave}>
+              <button className={styles.save} onClick={handleSave} >
                 Save
               </button>
             )}
           </div>
-          <div className={styles.delete}>
+          <div className={styles.delete} onClick={handleDelete}>
             <img src={closeIcon} />
           </div>
         </div>
