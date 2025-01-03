@@ -117,9 +117,7 @@ const WorkSpace = ({
         {folders.map((folder) => (
           <div
             key={folder._id}
-            className={`${styles.folderArea} ${
-              theme === "light" ? styles.light : ""
-            } ${
+            className={`${styles.folderArea}  ${
               folder._id === selectedFolderId ? styles.selectedFolder : ""
             }`}
             onClick={() => handleFolderClick(folder._id)}

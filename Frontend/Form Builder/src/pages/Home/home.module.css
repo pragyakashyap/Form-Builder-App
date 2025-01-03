@@ -93,7 +93,7 @@
   padding: 10px;
   cursor: pointer;
 }
-div.folderArea.light{
+:global(.light) .folderArea{
   background-color: white;
   border: 1px solid #333336;
 }
@@ -223,4 +223,9 @@ div.folderArea.light{
 
 .addfolder.light{
   background-color: white;
+}
+
+:global(.light) .sharemodal,:global(.light) .sharemodal input{
+  background-color: white;
+  color: black;
 }
