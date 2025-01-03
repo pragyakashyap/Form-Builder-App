@@ -70,7 +70,7 @@ const FormResponse = ({ formId, formComponents }) => {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className={styles.response}>
+    <>
       {responses.length === 0 ? (
         <p className={styles.noResponse}>No Response yet collected</p>
       ) : (
@@ -149,7 +149,7 @@ const FormResponse = ({ formId, formComponents }) => {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

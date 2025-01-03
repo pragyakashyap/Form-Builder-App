@@ -147,7 +147,3 @@
 :global(.light) .table td {
   border-bottom-color: #e4e4e7;
 }
-
-:global(.light) .response {
-  background-color: white;
-}
