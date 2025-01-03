@@ -49,8 +49,9 @@ router.get("/", authenticateToken, async (req, res) => {
 });
 
 //route to handle sharing workspace
-router.post("/share", async (req, res) => {
+router.post("/share", authenticate,async (req, res) => {
     const { workspaceId, email, permission } = req.body;
+    
     if (!workspaceId || !email || !permission) {
         return res.status(400).json({ message: "Missing required fields" });
     }
@@ -62,13 +63,17 @@ router.post("/share", async (req, res) => {
         if (!emailExist) {
             return res.status(404).json({ message: "User not found" });
         }
-        
+
+        // Preventing user from sharing with themselves
+        if (email === req.user.email) {
+            return res.status(400).json({ message: "You cannot share the workspace with yourself" });
+        }
 
         if (!workspace) {
             return res.status(404).json({ message: "Workspace not found" });
         }
 
-        // Add the user to `sharedWith` if not already present
+        // Adding the user to `sharedWith` if not already present
         const alreadyShared = workspace.sharedWith.some(
             (sharedUser) => sharedUser.email === email
         );
@@ -87,6 +92,7 @@ router.post("/share", async (req, res) => {
     }
 });
 
+
 router.post("/share-link", authenticate, async (req, res) => {
     const { token } = req.body;
 
@@ -100,7 +106,12 @@ router.post("/share-link", authenticate, async (req, res) => {
             return res.status(404).json({ message: "Workspace not found" });
         }
 
-        const userEmail = req.user.email; 
+        const userEmail = req.user.email;
+
+       
+        if (userEmail === req.user.email) {
+            return res.status(400).json({ message: "You cannot share the workspace with yourself" });
+        }
 
         const alreadyShared = workspace.sharedWith.some(
             (sharedUser) => sharedUser.email === userEmail
@@ -113,12 +124,13 @@ router.post("/share-link", authenticate, async (req, res) => {
         workspace.sharedWith.push({ email: userEmail, permission });
         await workspace.save();
 
-        res.status(200).json({ message: "Workspace added to your account" });
+        res.status(200).json({ message: "Workspace added to your account! Please refresh the page to view." });
     } catch (error) {
         console.error("Error processing shared link:", error);
         res.status(500).json({ message: "Server error" });
     }
 });
+
 
 
 router.get("/:userId", async (req, res) => {
@@ -143,16 +155,14 @@ router.get("/:userId", async (req, res) => {
         .populate("folders forms");
         
 
-         // Sort workspaces to show Aditya's first
          const sortedWorkspaces = workspaces.sort((a, b) => {
-            // If workspace owner matches userId (Aditya's), it should come first
+           
             if (a.owner.toString() === userId && b.owner.toString() !== userId) {
                 return -1;
             }
             if (b.owner.toString() === userId && a.owner.toString() !== userId) {
                 return 1;
             }
-            // If neither or both are owned by Aditya, maintain original order
             return 0;
         });
 
