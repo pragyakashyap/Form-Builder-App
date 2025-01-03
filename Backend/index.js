@@ -18,7 +18,7 @@ const corsOptions = {
     origin: (origin, callback) => {
         const allowedOrigins = [
             "http://localhost:5173",  // Localhost for development
-            "https://snapeats-food-ordering-app-1.netlify.app"  // Netlify app domain
+            "https://formbuilderwebapp.netlify.app/"// Netlify app domain
         ];
         if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
             callback(null, true); // Allow the request
