@@ -6,6 +6,7 @@ import FormEditor from "./pages/FormEditor/formEditor";
 import FormViewer from "./pages/FormViewer";
 import { useTheme,ThemeContext } from "./ThemeContext";
 import { useState } from "react";
+import SharedLinkPage from "./pages/SharedWorkspace";
 
 function App() {
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
@@ -45,6 +46,7 @@ function App() {
             }
           />
           <Route path="/forms/:shareableLink" element={<FormViewer />} />
+          <Route path="/share" element={<SharedLinkPage/>} />
         </Routes>
       </BrowserRouter>
     </>

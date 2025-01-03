@@ -338,7 +338,6 @@ const handleRatingSelect = (rating,component) => {
   };
   return (
     <div className={styles.formViewer}>
-      <h1>{form.name}</h1>
       <form className={styles.componentsContainer} onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
         {renderComponents()}
       </form>

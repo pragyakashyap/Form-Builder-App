@@ -50,7 +50,6 @@ const Landing = () => {
             <h1>Build advanced chatbots visually</h1>
           </div>
           <div style={{ textAlign: "center" }}>
-            {" "}
             <p>
               Typebot gives you powerful blocks to create unique chat
               experiences. Embed them anywhere on your web/mobile apps and start
@@ -63,14 +62,13 @@ const Landing = () => {
           <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1734768080/Container_y5u0fz.png" />
         </div>
       </div>
-      <div>
-        <div className={styles.landingAd}>
-          {" "}
-          <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1734870694/Background_Blur_bcg6xq.png" />
-          <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1734870694/Background_Blur_1_grbgbk.png" />
-        </div>
+      <div className={styles.landingImages}>
         <div className={styles.landingadimg}>
           <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1734768081/image_1_ke9tbm.png" />
+        </div>
+        <div className={styles.landingAd}>
+          <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1734870694/Background_Blur_bcg6xq.png" />
+          <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1734870694/Background_Blur_1_grbgbk.png" />
         </div>
       </div>
 

@@ -21,6 +21,7 @@
     color: white;
     font-size: 15px;
     margin-top: 14px;
+    cursor: pointer;
 }
 .logOut{
     display: flex;

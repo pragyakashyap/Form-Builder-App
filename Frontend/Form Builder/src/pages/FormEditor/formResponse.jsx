@@ -28,6 +28,7 @@ const FormResponse = ({ formId, formComponents }) => {
       } finally {
         setLoading(false);
       }
+      document.body.style.backgroundColor = "#1f1f23";
     };
 
     loadResponses();
@@ -59,97 +60,96 @@ const FormResponse = ({ formId, formComponents }) => {
       minute: "numeric",
       hour12: true,
     };
-  
-    return new Intl.DateTimeFormat("en-US", options).format(new Date(dateString));
+
+    return new Intl.DateTimeFormat("en-US", options).format(
+      new Date(dateString)
+    );
   };
-  
 
   if (loading) return <p>Loading responses...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <>
-    {responses.length===0 ? (
-      <p className={styles.noResponse}>No Response yet collected</p>
-    ) : (
-      <div className={styles.container}>
-         <div className={styles.statsGrid}>
-        <div className={styles.statsCard}>
-          <h3 className={styles.statsLabel}>Views</h3>
-          <p className={styles.statsValue}>{stats.views}</p>
-        </div>
-        <div className={styles.statsCard}>
-          <h3 className={styles.statsLabel}>Starts</h3>
-          <p className={styles.statsValue}>{stats.starts}</p>
-        </div>
-      </div>
+    <div className={styles.response}>
+      {responses.length === 0 ? (
+        <p className={styles.noResponse}>No Response yet collected</p>
+      ) : (
+        <div className={styles.container}>
+          <div className={styles.statsGrid}>
+            <div className={styles.statsCard}>
+              <h3 className={styles.statsLabel}>Views</h3>
+              <p className={styles.statsValue}>{stats.views}</p>
+            </div>
+            <div className={styles.statsCard}>
+              <h3 className={styles.statsLabel}>Starts</h3>
+              <p className={styles.statsValue}>{stats.starts}</p>
+            </div>
+          </div>
 
-    
-      <div className={styles.tableContainer}>
-        <table className={styles.responsesTable}>
-          <thead>
-            <tr>
-              <th></th> {/* Serial Number Column */}
-              <th>Submitted at</th>
-              {formComponents
-                .filter(
-                  (component) =>
-                    component.category === "input" &&
-                    component.type !== "Input Button"
-                )
-                .map((component) => (
-                  <th key={component.name}>
-                    {component.name.replace(/^Input\s/, "")}
-                  </th>
+          <div className={styles.tableContainer}>
+            <table className={styles.responsesTable}>
+              <thead>
+                <tr>
+                  <th></th> {/* Serial Number Column */}
+                  <th>Submitted at</th>
+                  {formComponents
+                    .filter(
+                      (component) =>
+                        component.category === "input" &&
+                        component.type !== "Input Button"
+                    )
+                    .map((component) => (
+                      <th key={component.name}>
+                        {component.name.replace(/^Input\s/, "")}
+                      </th>
+                    ))}
+                </tr>
+              </thead>
+              <tbody>
+                {responses.map((response, index) => (
+                  <tr key={index}>
+                    <td>{index + 1}</td> {/* Serial Number */}
+                    <td>{formatDate(response.submissionDate)}</td>
+                    {formComponents
+                      .filter(
+                        (component) =>
+                          component.category === "input" &&
+                          response.responses?.[component.name]
+                      )
+                      .map((component) => (
+                        <td key={component.name}>
+                          {response.responses[component.name]}
+                        </td>
+                      ))}
+                  </tr>
                 ))}
-            </tr>
-          </thead>
-          <tbody>
-            {responses.map((response, index) => (
-              <tr key={index}>
-                <td>{index + 1}</td> {/* Serial Number */}
-                <td>{formatDate(response.submissionDate)}</td>
-                {formComponents
-                  .filter(
-                    (component) =>
-                      component.category === "input" &&
-                      response.responses?.[component.name]
-                  )
-                  .map((component) => (
-                    <td key={component.name}>
-                      {response.responses[component.name]}
-                    </td>
-                  ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <div className={styles.piechartContainer}>
-        <PieChart
-          className={styles.piechart}
-          data={[
-            {
-              value: 100 - ((stats.completed / stats.views) * 100),
-              color: "#909090",
-            },
-            {
-              value: ((stats.completed / stats.views) * 100),
-              color: "#3B82F6",
-            },
-          ]}
-        />
-        <div className={styles.statsCard}>
-          <h3 className={styles.statsLabel}>Completion Rate</h3>
-          <p className={styles.statsValue}>
-            {((stats.completed / stats.views) * 100).toFixed(2)}%
-          </p>
+              </tbody>
+            </table>
+          </div>
+          <div className={styles.piechartContainer}>
+            <PieChart
+              className={styles.piechart}
+              data={[
+                {
+                  value: 100 - (stats.completed / stats.views) * 100,
+                  color: "#909090",
+                },
+                {
+                  value: (stats.completed / stats.views) * 100,
+                  color: "#3B82F6",
+                },
+              ]}
+            />
+            <div className={styles.statsCard}>
+              <h3 className={styles.statsLabel}>Completion Rate</h3>
+              <p className={styles.statsValue}>
+                {((stats.completed / stats.views) * 100).toFixed(2)}%
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
-        </div>   
-    )}
-    </>
-   
+      )}
+    </div>
   );
 };
 

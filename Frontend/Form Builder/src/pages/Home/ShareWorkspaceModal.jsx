@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "./home.module.css";
 
-const ShareWorkspaceModal = ({ onClose, onShare }) => {
+const ShareWorkspaceModal = ({ onClose, onShare, onShareByLink }) => {
   const [email, setEmail] = useState("");
   const [permission, setPermission] = useState("view");
   const handleSubmit = (e) => {
@@ -34,7 +34,7 @@ const ShareWorkspaceModal = ({ onClose, onShare }) => {
           Send Invite
         </button>
         <h3>Invite by Link</h3>
-        <button type="button"  onClick={() => onShare(email, "view")} className={styles.sendInvite}>
+        <button type="button"  onClick={onShareByLink} className={styles.sendInvite}>
           Copy link
         </button>
       </form>

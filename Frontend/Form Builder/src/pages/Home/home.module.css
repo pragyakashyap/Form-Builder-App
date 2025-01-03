@@ -16,7 +16,6 @@
   border-radius: 4px;
 }
 
-
 .rightNav {
   display: flex;
   justify-content: space-between;
@@ -46,24 +45,27 @@
   top: 100%;
   left: 0;
   right: 0;
-  background: #1d1d1d;
   border: 1px solid #333336;
   border-radius: 4px;
   z-index: 1000;
   max-height: 200px;
   overflow-y: auto;
-  
+  background: #1d1d1d;
 }
 
-.dropdownMenu.light{
+:global(.light) .dropdownMenu,:global(.light) .dropdownOption{
   background: white;
 }
+
+:global(.dark) .dropdownMenu,:global(.dark) .dropdownOption{
+  background: #1d1d1d;
+}
+
 
 .dropdownOption {
   padding: 10px;
   cursor: pointer;
   border-bottom: 1px solid #333336;
-  
 }
 
 .dropdownOption:last-child {
@@ -93,7 +95,7 @@
   padding: 10px;
   cursor: pointer;
 }
-:global(.light) .folderArea{
+:global(.light) .folderArea {
   background-color: white;
   border: 1px solid #333336;
 }
@@ -220,12 +222,17 @@
   background-color: white;
   color: black;
 }
+:global(.light) .selectedFolder{
+  background-color: #2a2a2d;
+  color: white;
+}
 
-.addfolder.light{
+:global(.light).addfolder{
   background-color: white;
 }
 
-:global(.light) .sharemodal,:global(.light) .sharemodal input{
+:global(.light) .sharemodal,
+:global(.light) .sharemodal input {
   background-color: white;
   color: black;
 }

@@ -98,10 +98,12 @@ const FormEditor = () => {
       } catch (error) {
         console.error("Error fetching form:", error);
       }
+      
     };
 
     loadForm();
   }, [formId]);
+
 
   const handleSave = async () => {
     if (permissions === "view") return;
@@ -110,7 +112,7 @@ const FormEditor = () => {
       const updatedForm = { ...form, components, name: formName };
       console.log("Payload sent to updateForm:", updatedForm);
       await updateForm(formId, updatedForm);
-      toast("Form updated successfully!");
+      toast.success("Form updated successfully!");
       setForm(updatedForm);
     } catch (error) {
       console.error("Error updating form:", error);
@@ -152,17 +154,13 @@ const FormEditor = () => {
 
   return (
     <div
-      className={`${styles.FormEditor} ${
-        theme === "light" ? styles.light : ""
-      }`}
+      className={`${styles.FormEditor}`}
     >
       <div
-        className={`${styles.topBar} ${theme === "light" ? styles.light : ""}`}
+        className={`${styles.topBar}`}
       >
         <div
-          className={`${styles.topBarFormName} ${
-            theme === "light" ? styles.light : ""
-          }`}
+          className={`${styles.topBarFormName}`}
         >
           <input
             type="text"
@@ -214,27 +212,21 @@ const FormEditor = () => {
           <>
             {/* Left Panel */}
             <div
-              className={`${styles.leftPanel} ${
-                theme === "light" ? styles.light : ""
-              }`}
+              className={`${styles.leftPanel}`}
             >
               <div className={styles.bubblesAndInputs}>
                 <div className={styles.bubbles}>
                   <p style={{ fontSize: "14px" }}>Bubbles</p>
                   <div className={styles.contents}>
                     <div
-                      className={`${styles.content} ${
-                        theme === "light" ? styles.light : ""
-                      }`}
+                      className={`${styles.content}`}
                       onClick={() => handleAddComponent("Text", "bubble")}
                     >
                       <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735400510/SVG_3_atf6zu.png" />
                       Text
                     </div>
                     <div
-                      className={`${styles.content} ${
-                        theme === "light" ? styles.light : ""
-                      }`}
+                      className={`${styles.content}`}
                       onClick={() => handleAddComponent("Image", "bubble")}
                     >
                       <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735400510/SVG_4_pb5shf.png" />
@@ -243,17 +235,13 @@ const FormEditor = () => {
                   </div>
                   <div className={styles.contents}>
                     <div
-                      className={`${styles.content} ${
-                        theme === "light" ? styles.light : ""
-                      }`}
+                      className={`${styles.content}`}
                     >
                       <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735400510/Group_14_1_k3iegq.png" />
                       Video
                     </div>
                     <div
-                      className={`${styles.content} ${
-                        theme === "light" ? styles.light : ""
-                      }`}
+                      className={`${styles.content}`}
                     >
                       <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735400510/Container_1_m6wdyq.png" />
                       GIF
@@ -265,18 +253,14 @@ const FormEditor = () => {
                   <p style={{ fontSize: "14px" }}>Inputs</p>
                   <div className={styles.contents}>
                     <div
-                      className={`${styles.content} ${
-                        theme === "light" ? styles.light : ""
-                      }`}
+                      className={`${styles.content}`}
                       onClick={() => handleAddComponent("Input Text", "input")}
                     >
                       <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735401694/SVG_11_djqhpq.png" />
                       Text
                     </div>
                     <div
-                      className={`${styles.content} ${
-                        theme === "light" ? styles.light : ""
-                      }`}
+                      className={`${styles.content}`}
                       onClick={() =>
                         handleAddComponent("Input Number", "input")
                       }
@@ -287,18 +271,14 @@ const FormEditor = () => {
                   </div>
                   <div className={styles.contents}>
                     <div
-                      className={`${styles.content} ${
-                        theme === "light" ? styles.light : ""
-                      }`}
+                      className={`${styles.content}`}
                       onClick={() => handleAddComponent("Input Email", "input")}
                     >
                       <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735401694/SVG_10_iuhe3v.png" />
                       Email
                     </div>
                     <div
-                      className={`${styles.content} ${
-                        theme === "light" ? styles.light : ""
-                      }`}
+                      className={`${styles.content}`}
                       onClick={() => handleAddComponent("Input Phone", "input")}
                     >
                       <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735401694/SVG_7_dghv8g.png" />
@@ -308,18 +288,14 @@ const FormEditor = () => {
 
                   <div className={styles.contents}>
                     <div
-                      className={`${styles.content} ${
-                        theme === "light" ? styles.light : ""
-                      }`}
+                      className={`${styles.content}`}
                       onClick={() => handleAddComponent("Input Date", "input")}
                     >
                       <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735401693/SVG_9_lekigc.png" />
                       Date
                     </div>
                     <div
-                      className={`${styles.content} ${
-                        theme === "light" ? styles.light : ""
-                      }`}
+                      className={`${styles.content}`}
                       onClick={() =>
                         handleAddComponent("Input Rating", "input")
                       }
@@ -331,9 +307,7 @@ const FormEditor = () => {
 
                   <div className={styles.contents}>
                     <div
-                      className={`${styles.content} ${
-                        theme === "light" ? styles.light : ""
-                      }`}
+                      className={`${styles.content}`}
                       onClick={() =>
                         handleAddComponent("Input Button", "input")
                       }
@@ -353,9 +327,7 @@ const FormEditor = () => {
             {/* Right Panel */}
             <div className={styles.rightPanel}>
               <div
-                className={`${styles.start} ${
-                  theme === "light" ? styles.light : ""
-                }`}
+                className={styles.start}
               >
                 <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1735298664/Vector_6_du4oob.png" />
                 Start

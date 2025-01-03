@@ -15,19 +15,15 @@
   padding: 8px;
   border-radius: 8px;
   width: fit-content;
-
 }
-.textbubble{
+.textbubble {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-h1 {
-  text-align: center;
-}
 .componentsContainer {
-  margin-top: 50px;
+  margin-top: 12%;
 }
 .bubble {
   border-radius: 8px;
@@ -42,73 +38,71 @@ h1 {
   width: 25%;
   display: flex;
   justify-content: space-around;
-  
 }
-.ratingInput{
-    color:white;
-    
+.ratingInput {
+  color: white;
 }
 
 .button {
   cursor: pointer;
   background-color: #1a5fff;
- border-radius: 5px;
- padding: 5px;
- display: flex;
- justify-content: center;
- align-items:center ;
+  border-radius: 5px;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.button img{
-    width: 30px;
-    height: 25px;
+.button img {
+  width: 30px;
+  height: 25px;
 }
 
-.inputcomponents{
-    display: flex;
-    justify-content: flex-end;
-    gap: 14px;
-
+.inputcomponents {
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
 }
 
-.ratings{
-    border-radius: 50%;
-    background-color: #1A5FFF;
-    width: 20px;
-    height: 20px;
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    cursor: pointer;
-    font-size: 12px;
-    align-items: center;
+.ratings {
+  border-radius: 50%;
+  background-color: #1a5fff;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  font-size: 12px;
+  align-items: center;
 }
-.ratings.selected{
-  background-color: #FF8E21;
+.ratings.selected {
+  background-color: #ff8e21;
 }
 
- .ratings:focus{
-  background-color: #FF8E21;
- }
-.submit{
-    width: 30%;
-    padding: 8px;
-    border-radius: 5px;
-    background-color: #1A5FFF;
-    color: white;
-    margin: auto;
-    cursor: pointer;
+.ratings:focus {
+  background-color: #ff8e21;
 }
-.submitted,.submittedButton{
+.submit {
+  width: 30%;
+  padding: 8px;
+  border-radius: 5px;
+  background-color: #1a5fff;
+  color: white;
+  margin: auto;
+  cursor: pointer;
+}
+.submitted,
+.submittedButton {
   background-color: #777777;
   color: white;
 }
 
-@media (max-width:641px){
-    .formViewer {
-        width: 100%;
-    }
-    .inputcomponents{
-        margin-right: 18px;
-    }
+@media (max-width: 641px) {
+  .formViewer {
+    width: 100%;
+  }
+  .inputcomponents {
+    margin-right: 18px;
+  }
 }

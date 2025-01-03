@@ -105,9 +105,7 @@ const WorkSpace = ({
       <div className={styles.folder}>
         {permissions === "edit" && (
           <div
-            className={`${styles.folderArea} ${
-              theme === "light" ? styles.light : ""
-            }`}
+            className={`${styles.folderArea}`}
             onClick={() => setModalOpen(true)}
           >
             <img src="folder.png" alt="Folder" />

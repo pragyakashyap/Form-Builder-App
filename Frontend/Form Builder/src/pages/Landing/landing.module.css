@@ -59,6 +59,9 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+.landingImages{
+  position: relative;
+}
 .landingAd {
   margin: 3rem;
   display: flex;
@@ -75,9 +78,14 @@
   align-items: center;
 }
 .landingadimg img {
+ 
+  width: 950px;
+
+}
+.landingadimg {
   position: absolute;
-  width: 900px;
-  bottom: -70%;
+  top: 10%;
+  left: 15%;
 }
 .footer1 {
   display: flex;
@@ -90,7 +98,7 @@
 .landingFooter {
   display: flex;
   justify-content: space-evenly;
-  margin-top: 8rem;
+  margin-top: 15%;
   margin-bottom: 4rem;
 }
 .footer1Top {

@@ -38,9 +38,9 @@ const Settings = () => {
       const response = await updateUser(tempData);
 
       setFormData(tempData);
-      toast(response.message);
+      toast.success(response.message);
     } catch (error) {
-      toast.error("An unexpected error occurred. Please try again.");
+      toast.error(error.message);
       console.error(error);
     } finally {
       setLoading(false);

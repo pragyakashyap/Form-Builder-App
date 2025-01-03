@@ -223,6 +223,33 @@ export const shareworkspace = async (data) => {
   return await response.json(); // Return the parsed JSON response
 };
 
+// Function to handle the link opening
+export const handleSharedLink = async (token) => {
+  const authToken = localStorage.getItem("token");
+
+  try {
+      const response = await fetch(`${BACKEND_URL}api/workspaces/share-link`, {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${authToken}`, 
+          },
+          body: JSON.stringify({ token }),
+      });
+
+      if (response.ok) {
+          return { message: "Workspace added to your account!" };
+      } else {
+          const errorData = await response.json();
+          return { message: errorData.message || "Failed to add workspace" };
+      }
+  } catch (error) {
+      console.error("Error handling shared link:", error);
+      return { message: "An error occurred while processing the link." };
+  }
+};
+
+
 export const submitForm = async (formId, responses) => {
   try {
     const response = await fetch(`${BACKEND_URL}api/forms-response/submit-form`, {

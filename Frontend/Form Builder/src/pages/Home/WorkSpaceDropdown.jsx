@@ -10,24 +10,9 @@ const WorkSpaceDropdown = ({
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState(activeWorkspace);
 
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
-
   useEffect(() => {
     setSelected(activeWorkspace);
   }, [activeWorkspace]);
-   
-  useEffect(() => {
-    const handleThemeChange = () => {
-      const savedTheme = localStorage.getItem("theme") || "dark";
-      setTheme(savedTheme);
-    };
-
-    window.addEventListener("themeChange", handleThemeChange);
-
-    return () => {
-      window.removeEventListener("themeChange", handleThemeChange);
-    };
-  }, []);
 
   const navigate = useNavigate();
 
@@ -50,27 +35,17 @@ const WorkSpaceDropdown = ({
       className={styles.workSpaceDropdown}
       onClick={() => setIsOpen(!isOpen)}
     >
-      <div className={styles.selectedOption}>
-        {selected?.name}
-       
-        {/* Use optional chaining and fallback */}
-      </div>
+      <div className={styles.selectedOption}>{selected?.name}</div>
 
       {/* Dropdown Options */}
       {isOpen && (
-        <div
-          className={`${styles.dropdownMenu} ${
-            theme === "light" ? styles.light : ""
-          }`}
-        >
+        <div className={`${styles.dropdownMenu}`}>
           {workspaces
             .filter((workspace) => workspace._id !== selected.id) // Exclude the selected option
             .map((workspace) => (
               <div
                 key={workspace._id}
-                className={`${styles.dropdownOption} ${
-                  theme === "light" ? styles.light : ""
-                }`}
+                className={`${styles.dropdownOption}`}
                 onClick={() => handleWorkspaceChange(workspace)}
               >
                 {workspace.name}

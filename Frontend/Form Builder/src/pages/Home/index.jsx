@@ -12,9 +12,12 @@ import {
   deleteForm,
   shareworkspace,
   fetchWorkspacesById,
+  handleSharedLink,
 } from "../../services";
 import ThemeSwitch from "../ThemeSwitch";
 import toast from "react-hot-toast";
+import { useTheme } from "../../ThemeContext";
+import { useSearchParams } from "react-router-dom";
 
 const Home = () => {
   const [workspaces, setWorkspaces] = useState([]);
@@ -24,26 +27,24 @@ const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [permissions, setPermissions] = useState("edit");
 
+  const { theme } = useTheme();
+
   const userId = localStorage.getItem("userId");
-  const userEmail = localStorage.getItem("userEmail"); 
+  const userEmail = localStorage.getItem("userEmail");
 
   const determineUserPermissions = (workspace) => {
-
     if (!workspace) return "edit";
-    
-   
+
     if (!workspace.sharedWith || workspace.sharedWith.length === 0) {
       return "edit";
     }
-    
+
     const currentUserShare = workspace.sharedWith.find(
-      share => share.email === userEmail
+      (share) => share.email === userEmail
     );
 
     return currentUserShare ? currentUserShare.permission : "edit";
   };
-
-
 
   useEffect(() => {
     const getWorkspace = async () => {
@@ -66,14 +67,12 @@ const Home = () => {
     getWorkspace();
   }, []);
 
-
-
   const handleWorkspaceChange = (id) => {
     console.log("Workspace selected:", id);
     const selectedWorkspace = workspaces.find(
       (workspace) => workspace._id === id
     );
-    console.log(selectedWorkspace)
+    console.log(selectedWorkspace);
     if (selectedWorkspace) {
       setActiveWorkspace(selectedWorkspace);
       setFolders(selectedWorkspace.folders || []);
@@ -87,18 +86,18 @@ const Home = () => {
       toast.error("You do not have permission to perform this action.");
       return;
     }
-  
+
     try {
       const response = await createFolder({
         name: folderName,
         workspaceId: activeWorkspace._id,
       });
       console.log("Folder creation response:", response);
-  
+
       // Update the active workspace's folders
       const updatedFolders = [...folders, response];
       setFolders(updatedFolders);
-  
+
       // Sync back to the workspaces array
       setWorkspaces((prevWorkspaces) =>
         prevWorkspaces.map((ws) =>
@@ -111,15 +110,17 @@ const Home = () => {
       console.error("Error creating folder:", err);
     }
   };
-  
+
   const handleDeleteFolder = async (folderId) => {
     try {
       await deleteFolder(folderId);
-  
+
       // Update the active workspace's folders
-      const updatedFolders = folders.filter((folder) => folder._id !== folderId);
+      const updatedFolders = folders.filter(
+        (folder) => folder._id !== folderId
+      );
       setFolders(updatedFolders);
-  
+
       // Sync back to the workspaces array
       setWorkspaces((prevWorkspaces) =>
         prevWorkspaces.map((ws) =>
@@ -132,62 +133,60 @@ const Home = () => {
       console.error("Error deleting folder:", error);
     }
   };
-  
+
   const handleAddForm = async (formName, folderId = null) => {
     if (permissions !== "edit") {
       toast.error("You do not have permission to perform this action.");
       return;
     }
-    
+
     try {
-       await createForm({
+      await createForm({
         name: formName,
         workspaceId: activeWorkspace._id,
         folderId,
       });
-  
+
       const updatedWorkspaces = await fetchWorkspacesById(userId); // Fetch updated data
-    setWorkspaces(updatedWorkspaces);
-    const updatedWorkspace = updatedWorkspaces.find(ws => ws._id === activeWorkspace._id);
-    setActiveWorkspace(updatedWorkspace);
-    setFolders(updatedWorkspace.folders || []);
-    setForms(updatedWorkspace.forms || []);
-    
+      setWorkspaces(updatedWorkspaces);
+      const updatedWorkspace = updatedWorkspaces.find(
+        (ws) => ws._id === activeWorkspace._id
+      );
+      setActiveWorkspace(updatedWorkspace);
+      setFolders(updatedWorkspace.folders || []);
+      setForms(updatedWorkspace.forms || []);
     } catch (err) {
       console.error("Error creating form:", err);
     }
   };
-  
+
   const handleDeleteForm = async (formId) => {
     try {
       await deleteForm(formId);
-  
+
       const updatedForms = forms.filter((form) => form._id !== formId);
       setForms(updatedForms);
-  
+
       setWorkspaces((prevWorkspaces) =>
         prevWorkspaces.map((ws) =>
-          ws._id === activeWorkspace._id
-            ? { ...ws, forms: updatedForms }
-            : ws
+          ws._id === activeWorkspace._id ? { ...ws, forms: updatedForms } : ws
         )
       );
     } catch (error) {
       console.error("Error deleting form:", error);
     }
   };
-  
 
   const handleShareWorkspace = async (email, permission) => {
     try {
       const data = {
         workspaceId: activeWorkspace._id,
         email,
-        permission
+        permission,
       };
 
       const workspace = await shareworkspace(data);
-      toast.success(`Shared workspace with ${email} (${permission})`)
+      toast(workspace.message);
 
       // Update the specific workspace in the state
       setWorkspaces((prevWorkspaces) =>
@@ -197,10 +196,22 @@ const Home = () => {
       setIsModalOpen(false);
     } catch (error) {
       console.error("Error sharing workspace:", error);
-      toast(error.message || "An error occurred while sharing the workspace.");
+      toast.error(
+        error.message || "An error occurred while sharing the workspace."
+      );
     }
   };
 
+  const handleCopyLink = () => {
+    const token = btoa(`${activeWorkspace._id}:view`);
+    const url = `${window.location.origin}/share?token=${token}`;
+    navigator.clipboard
+        .writeText(url)
+        .then(() => toast.success("Workspace link copied to clipboard!"))
+        .catch(() => toast.error("Failed to copy the link"));
+};
+
+  
   return (
     <>
       <div className={styles.home}>
@@ -236,6 +247,7 @@ const Home = () => {
             <ShareWorkspaceModal
               onClose={() => setIsModalOpen(false)}
               onShare={handleShareWorkspace}
+              onShareByLink={handleCopyLink}
             />
           )}
         </div>

@@ -3,10 +3,6 @@
   height: 100%;
   background-color: #1f1f23;
 }
-.FormEditor.light, .topBar.light, .topBarFormName.light input, .leftPanel.light, .content.light,.start.light{
-  background-color: white;
-}
-
 .topBar {
   display: flex;
   justify-content: space-between;
@@ -58,14 +54,13 @@
   display: flex;
   gap: 10px;
   margin-bottom: 12px;
-  
 }
 .content {
   padding-left: 1.063em;
   background-color: #1f1f23;
-  height: 2.43em;;
+  height: 2.43em;
   width: 9.313em;
-  padding: 10px auto ;
+  padding: 10px auto;
   border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
@@ -83,7 +78,7 @@
   margin-top: 5%;
   gap: 12px;
 }
-.start{
+.start {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -97,37 +92,38 @@
   padding: 1rem;
   border-radius: 10px;
 }
-.component{
-    text-align: left;
+.component {
+  text-align: left;
 }
-.component p{
-    margin-top: 0px;
-    margin-bottom: 8px;
+.component p {
+  margin-top: 0px;
+  margin-bottom: 8px;
 }
-.component input,.component button{
-    padding: 8px;
-    background-color: #1f1f23;
-    border: none;
-    border-radius: 8px;
-    width: 95%;
-    color:#555555;
+.component input,
+.component button {
+  padding: 8px;
+  background-color: #1f1f23;
+  border: none;
+  border-radius: 8px;
+  width: 95%;
+  color: #555555;
 }
-.component span{
-    color:#555555;
-    font-size: 12px;
-}
-
-.component button{
-    padding:14px;
+.component span {
+  color: #555555;
+  font-size: 12px;
 }
 
-.componentWrapper{
+.component button {
+  padding: 14px;
+}
+
+.componentWrapper {
   position: relative;
 }
-.component{
+.component {
   width: 100%;
 }
-.deleteIcon{
+.deleteIcon {
   border-radius: 50%;
   padding: 2px;
   position: absolute;
@@ -138,26 +134,26 @@
   height: 20px;
   cursor: pointer;
 }
-.topBarFlowAndResponse button{
-  padding: 8px 13px ;
+.topBarFlowAndResponse button {
+  padding: 8px 13px;
   font-size: 14px;
 }
 
-.flow{
+.flow {
   background: transparent;
-  color: #7EA6FF;
-  border-color: #7EA6FF;
+  color: #7ea6ff;
+  border-color: #7ea6ff;
   border-radius: 6px;
   cursor: pointer;
 }
-.response{
-  background:transparent;
+.response {
+  background: transparent;
   border: none;
   color: white;
   cursor: pointer;
 }
 
-.shareAndSave button{
+.shareAndSave button {
   border-radius: 4px;
   font-size: 14px;
   color: white;
@@ -166,17 +162,17 @@
   border: none;
   cursor: pointer;
 }
-.share{
-  background-color: #1A5FFF;
+.share {
+  background-color: #1a5fff;
 }
-.save{
-  background-color: #4ADE80;
+.save {
+  background-color: #4ade80;
 }
 .delete {
-  width:24px;
+  width: 24px;
   height: 24px;
   display: grid;
-    place-items: center;
+  place-items: center;
 }
 .component.disabled {
   opacity: 0.7;
@@ -188,30 +184,44 @@
   background-color: #f0f0f0;
 }
 
-.share:disabled{
-background-color: #848890;
+.share:disabled {
+  background-color: #848890;
 }
 
-/* Light theme compatibility */
+/* Light theme */
 
-:global(.light) .componentWrapper{
+:global(.light) .componentWrapper {
   background-color: #f4f4f5;
   color: #27272a;
 }
-:global(.light) .mainArea{
+:global(.light) .mainArea {
   background-color: white;
 }
-:global(.light) .component input{
+:global(.light) .component input {
   background-color: #f4f4f5;
 }
 :global(.light) .deleteIcon {
   background: none;
-  border:1px solid #D6D6D6
+  border: 1px solid #d6d6d6;
 }
-:global(.light) .deleteIcon,:global(.light) .leftPanel,:global(.light) .content,:global(.light) .topBarFormName input,:global(.light) .start,:global(.light) .component button,:global(.light) .topBar {
+:global(.light) .deleteIcon,
+:global(.light) .leftPanel,
+:global(.light) .content,
+:global(.light) .topBarFormName input,
+:global(.light) .start,
+:global(.light) .component button,
+:global(.light) .topBar {
   background-color: white;
-  border-color: #D6D6D6
+  border-color: #d6d6d6;
 }
-:global(.light) .response{
-  color:black
+:global(.light) .response {
+  color: black;
+}
+:global(.light).FormEditor,
+:global(.light).topBar,
+:global(.light) .topBarFormName input,
+:global(.light) .leftPanel,
+:global(.light) .content,
+:global(.light) .start {
+  background-color: white;
 }
