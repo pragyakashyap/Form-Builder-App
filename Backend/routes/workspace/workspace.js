@@ -3,6 +3,8 @@ import authenticateToken from "../../middleware/index.js";
 import Workspace from "../../schema/workspace.schema.js";
 import User from "../../schema/user.schema.js";
 import mongoose from "mongoose"
+import crypto from "crypto"
+import authenticate from "../../middleware/authenticate.js";
 
 const router = express.Router();
 
@@ -55,6 +57,12 @@ router.post("/share", async (req, res) => {
 
     try {
         const workspace = await Workspace.findById(workspaceId);
+        const emailExist = await User.findOne({ email });
+
+        if (!emailExist) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        
 
         if (!workspace) {
             return res.status(404).json({ message: "Workspace not found" });
@@ -78,6 +86,40 @@ router.post("/share", async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 });
+
+router.post("/share-link", authenticate, async (req, res) => {
+    const { token } = req.body;
+
+    try {
+        const [workspaceId, permission] = Buffer.from(token, "base64")
+            .toString("utf-8")
+            .split(":");
+
+        const workspace = await Workspace.findById(workspaceId);
+        if (!workspace) {
+            return res.status(404).json({ message: "Workspace not found" });
+        }
+
+        const userEmail = req.user.email; 
+
+        const alreadyShared = workspace.sharedWith.some(
+            (sharedUser) => sharedUser.email === userEmail
+        );
+
+        if (alreadyShared) {
+            return res.status(200).json({ message: "Workspace already shared with this user" });
+        }
+
+        workspace.sharedWith.push({ email: userEmail, permission });
+        await workspace.save();
+
+        res.status(200).json({ message: "Workspace added to your account" });
+    } catch (error) {
+        console.error("Error processing shared link:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+});
+
 
 router.get("/:userId", async (req, res) => {
     const { userId } = req.params;
