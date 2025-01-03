@@ -238,7 +238,7 @@ export const handleSharedLink = async (token) => {
       });
 
       if (response.ok) {
-          return { message: "Workspace added to your account!" };
+          return response.json();
       } else {
           const errorData = await response.json();
           return { message: errorData.message || "Failed to add workspace" };

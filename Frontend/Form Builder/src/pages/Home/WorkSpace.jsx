@@ -121,6 +121,7 @@ const WorkSpace = ({
             onClick={() => handleFolderClick(folder._id)}
           >
             {folder.name || "Unnamed Folder"} 
+            {permissions === "edit" && (
             <img
               className={styles.deleteFolder}
               src="delete.png"
@@ -129,6 +130,7 @@ const WorkSpace = ({
                 handleOpenDeleteModal(folder, "folder");
               }}
             />
+            )}
           </div>
         ))}
       </div>
@@ -156,6 +158,7 @@ const WorkSpace = ({
               onClick={() => handleEditForm(form._id)}
             >
               {form.name}
+              {permissions === "edit" && (
               <img
                 className={styles.delete}
                 src="delete.png"
@@ -164,6 +167,7 @@ const WorkSpace = ({
                   handleOpenDeleteModal(form, "form");
                 }}
               />
+              )}
             </div>
           ))}
       </div>
