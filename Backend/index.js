@@ -29,7 +29,7 @@ const corsOptions = {
     methods: "GET,POST,PUT,DELETE", // Specify allowed HTTP methods
     allowedHeaders: ["Content-Type", "Authorization"] // Specify allowed headers
 };
-
+app.use(cors(corsOptions)); 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }))
