@@ -8,9 +8,9 @@ const Landing = () => {
   const handleClick = () => {
     navigate("/login");
   };
-  useEffect(()=>{
+  useEffect(() => {
     document.body.style.backgroundColor = "#171923";
-  },[])
+  }, []);
   return (
     <div className={styles.landing}>
       <div className={styles.landingHeader}>
@@ -63,13 +63,15 @@ const Landing = () => {
           <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1734768080/Container_y5u0fz.png" />
         </div>
       </div>
-      <div className={styles.landingAd}>
-        <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1734870694/Background_Blur_bcg6xq.png" />
-
-        <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1734870694/Background_Blur_1_grbgbk.png" />
-      </div>
-      <div className={styles.landingadimg}>
-        <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1734768081/image_1_ke9tbm.png" />
+      <div>
+        <div className={styles.landingAd}>
+          {" "}
+          <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1734870694/Background_Blur_bcg6xq.png" />
+          <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1734870694/Background_Blur_1_grbgbk.png" />
+        </div>
+        <div className={styles.landingadimg}>
+          <img src="https://res.cloudinary.com/dft6bqu4v/image/upload/v1734768081/image_1_ke9tbm.png" />
+        </div>
       </div>
 
       <div className={styles.landingFooter}>
