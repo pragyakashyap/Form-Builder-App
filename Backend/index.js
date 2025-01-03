@@ -18,7 +18,7 @@ const corsOptions = {
     origin: (origin, callback) => {
         const allowedOrigins = [
             "http://localhost:5173",
-            "https://form-builder-web-app.netlify.app/",
+            "https://form-builder-web-app.netlify.app",
             "https://form-builder-app-zeta.vercel.app"
         ];
         if (!origin || allowedOrigins.includes(origin)) {
